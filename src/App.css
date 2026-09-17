@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -5,29 +9,156 @@ body {
   color: white;
 }
 
+button {
+  border: none;
+  cursor: pointer;
+  background: #22c55e;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
 .app {
   min-height: 100vh;
-  padding: 40px;
+}
+
+.landing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+}
+
+.hero {
+  max-width: 700px;
 }
 
 .logo {
   font-size: 32px;
-  font-weight: bold;
+  font-weight: 800;
 }
 
-.tagline {
+.hero h1 {
+  font-size: 52px;
+  line-height: 1.1;
+  margin: 30px 0 20px;
+}
+
+.hero p {
   color: #9ca3af;
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 19px;
+  line-height: 1.6;
+  margin-bottom: 35px;
 }
 
-button {
-  margin-top: 30px;
-  padding: 14px 24px;
-  border: none;
+.dashboard {
+  padding: 30px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  background: transparent;
+  border: 1px solid #374151;
+}
+
+.container {
+  max-width: 850px;
+  margin: 70px auto;
+}
+
+.container h1 {
+  font-size: 40px;
+}
+
+.subtitle {
+  color: #9ca3af;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 30px;
+}
+
+label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
   border-radius: 8px;
-  background: #22c55e;
+  border: 1px solid #374151;
+  background: #0b0f14;
   color: white;
   font-size: 16px;
-  cursor: pointer;
+}
+
+.card button {
+  margin-top: 25px;
+}
+
+.results {
+  margin-top: 35px;
+}
+
+.result-card {
+  display: flex;
+  justify-content: space-between;
+  background: #111827;
+  border: 1px solid #1f2937;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.result-card span {
+  color: #9ca3af;
+}
+
+.warning {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #29200b;
+  border: 1px solid #6b4f13;
+}
+
+.warning p {
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .dashboard {
+    padding: 20px;
+  }
+
+  .container {
+    margin-top: 45px;
+  }
+
+  .container h1 {
+    font-size: 30px;
+  }
 }

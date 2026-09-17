@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
 
-/* =========================================================
-   LEAKLEANS — BUSINESS SYSTEMS
-========================================================= */
-
 const integrations = [
   {
     id: "salesforce",
     name: "Salesforce",
     category: "CRM",
     logo: "https://cdn.simpleicons.org/salesforce",
-    description:
-      "Connect leads, opportunities, activities and customer records.",
+    description: "Connect leads, opportunities, activities and customer records.",
     fields: [
       ["instanceUrl", "Salesforce Instance URL", "https://company.my.salesforce.com"],
       ["clientId", "Client ID", "Enter Client ID"],
@@ -25,8 +20,7 @@ const integrations = [
     name: "WhatsApp Business",
     category: "Messaging",
     logo: "https://cdn.simpleicons.org/whatsapp",
-    description:
-      "Analyze customer conversations, response times and missed opportunities.",
+    description: "Analyze customer conversations, response times and missed opportunities.",
     fields: [
       ["businessId", "Business Account ID", "Enter Business Account ID"],
       ["phoneId", "Phone Number ID", "Enter Phone Number ID"],
@@ -38,8 +32,7 @@ const integrations = [
     name: "Genesys",
     category: "Contact Center",
     logo: "https://cdn.simpleicons.org/genesys",
-    description:
-      "Connect calls, queues, agents and customer interaction signals.",
+    description: "Connect calls, queues, agents and customer interaction signals.",
     fields: [
       ["region", "Genesys Region", "Enter Genesys Region"],
       ["clientId", "Client ID", "Enter Client ID"],
@@ -51,8 +44,7 @@ const integrations = [
     name: "Avaya",
     category: "Contact Center",
     logo: "https://cdn.simpleicons.org/avaya",
-    description:
-      "Connect customer calls and operational contact-center signals.",
+    description: "Connect customer calls and contact-center operational signals.",
     fields: [
       ["baseUrl", "API Base URL", "https://your-avaya-api.com"],
       ["clientId", "Client ID", "Enter Client ID"],
@@ -65,8 +57,7 @@ const integrations = [
     name: "HubSpot",
     category: "CRM",
     logo: "https://cdn.simpleicons.org/hubspot",
-    description:
-      "Connect contacts, deals, activities and pipeline information.",
+    description: "Connect contacts, deals, activities and pipeline information.",
     fields: [
       ["portalId", "Portal ID", "Enter Portal ID"],
       ["accessToken", "Access Token", "Enter Access Token"],
@@ -77,8 +68,7 @@ const integrations = [
     name: "Gmail",
     category: "Email",
     logo: "https://cdn.simpleicons.org/gmail",
-    description:
-      "Analyze customer emails, response delays and follow-up gaps.",
+    description: "Analyze customer emails, response delays and follow-up gaps.",
     fields: [
       ["clientId", "Google Client ID", "Enter Client ID"],
       ["clientSecret", "Google Client Secret", "Enter Client Secret"],
@@ -90,8 +80,7 @@ const integrations = [
     name: "Zendesk",
     category: "Support",
     logo: "https://cdn.simpleicons.org/zendesk",
-    description:
-      "Connect tickets, support conversations and unresolved issues.",
+    description: "Connect tickets, support conversations and unresolved issues.",
     fields: [
       ["subdomain", "Zendesk Subdomain", "yourcompany"],
       ["email", "Admin Email", "admin@company.com"],
@@ -103,8 +92,7 @@ const integrations = [
     name: "Custom CRM / API",
     category: "Custom",
     logo: "https://cdn.simpleicons.org/api",
-    description:
-      "Connect your own CRM or business platform through an API.",
+    description: "Connect your own CRM or business platform through an API.",
     fields: [
       ["baseUrl", "API Base URL", "https://api.company.com"],
       ["apiKey", "API Key", "Enter API Key"],
@@ -113,52 +101,39 @@ const integrations = [
   },
 ];
 
-/* =========================================================
-   PAYMENT PROVIDERS
-========================================================= */
-
-const paymentProviders = [
+const payments = [
   {
     id: "razorpay",
     name: "Razorpay",
-    category: "India",
+    region: "India",
     logo: "https://cdn.simpleicons.org/razorpay",
-    description: "UPI, cards, net banking and Indian subscriptions.",
     methods: "UPI • Cards • Net Banking",
   },
   {
     id: "stripe",
     name: "Stripe",
-    category: "International",
+    region: "International",
     logo: "https://cdn.simpleicons.org/stripe",
-    description: "International cards, subscriptions and currencies.",
     methods: "Cards • International • Multi-currency",
   },
   {
     id: "paypal",
     name: "PayPal",
-    category: "International",
+    region: "International",
     logo: "https://cdn.simpleicons.org/paypal",
-    description: "International customer payments.",
     methods: "PayPal • International",
   },
 ];
-
-/* =========================================================
-   PRICING
-========================================================= */
 
 const plans = [
   {
     id: "small",
     name: "Small",
     price: "₹20,999",
-    period: "/ month",
-    description:
-      "For smaller businesses starting with revenue leakage intelligence.",
+    description: "For smaller businesses starting with revenue intelligence.",
     features: [
       "Up to 3 connected systems",
-      "Revenue leakage detection",
+      "Revenue leak detection",
       "Leak investigation",
       "Basic analytics",
       "Recommended actions",
@@ -169,9 +144,7 @@ const plans = [
     id: "business",
     name: "Business",
     price: "₹69,999",
-    period: "/ month",
-    description:
-      "For growing companies with multiple teams and business systems.",
+    description: "For growing companies with multiple teams and systems.",
     features: [
       "Up to 10 connected systems",
       "Cross-system intelligence",
@@ -187,9 +160,7 @@ const plans = [
     id: "enterprise",
     name: "Enterprise",
     price: "₹99,999",
-    period: "/ month",
-    description:
-      "For large organizations with complex workflows and integrations.",
+    description: "For large organizations with complex workflows.",
     features: [
       "Large-scale integrations",
       "Custom CRM/API integrations",
@@ -202,11 +173,7 @@ const plans = [
   },
 ];
 
-/* =========================================================
-   DEMO LEAKS
-========================================================= */
-
-const demoLeaks = [
+const leaks = [
   {
     id: 1,
     title: "Follow-up Failure",
@@ -216,10 +183,8 @@ const demoLeaks = [
     severity: "High",
     status: "Open",
     signal: "Lead → Sales",
-    cause:
-      "Customer interaction was recorded but no follow-up activity was detected.",
-    resolution:
-      "Automatically assign the opportunity to the responsible sales representative and trigger a follow-up task.",
+    cause: "Customer interaction was recorded but no follow-up activity was detected.",
+    resolution: "Assign the opportunity to the responsible sales representative and trigger a follow-up task.",
   },
   {
     id: 2,
@@ -230,10 +195,8 @@ const demoLeaks = [
     severity: "High",
     status: "Open",
     signal: "Call → Sales",
-    cause:
-      "An inbound customer call was not followed by an appropriate sales or service action.",
-    resolution:
-      "Create a callback task and notify the responsible team immediately.",
+    cause: "An inbound customer call was not followed by an appropriate sales or service action.",
+    resolution: "Create a callback task and notify the responsible team immediately.",
   },
   {
     id: 3,
@@ -244,10 +207,8 @@ const demoLeaks = [
     severity: "Medium",
     status: "Investigating",
     signal: "Message → Response",
-    cause:
-      "The customer waited beyond the configured response window.",
-    resolution:
-      "Escalate delayed conversations and assign an owner automatically.",
+    cause: "The customer waited beyond the configured response window.",
+    resolution: "Escalate delayed conversations and assign an owner automatically.",
   },
   {
     id: 4,
@@ -258,16 +219,10 @@ const demoLeaks = [
     severity: "Medium",
     status: "Open",
     signal: "Team → Team",
-    cause:
-      "The opportunity moved between teams without a clearly detected owner.",
-    resolution:
-      "Assign ownership and monitor the opportunity until the next customer action.",
+    cause: "The opportunity moved between teams without a clearly detected owner.",
+    resolution: "Assign ownership and monitor the opportunity until the next customer action.",
   },
 ];
-
-/* =========================================================
-   SMALL COMPONENTS
-========================================================= */
 
 function Logo({ item, large = false }) {
   const [failed, setFailed] = useState(false);
@@ -282,9 +237,9 @@ function Logo({ item, large = false }) {
 
   return (
     <img
-      className={`brand-logo ${large ? "large" : ""}`}
       src={item.logo}
       alt={`${item.name} logo`}
+      className={`brand-logo ${large ? "large" : ""}`}
       onError={() => setFailed(true)}
     />
   );
@@ -292,9 +247,9 @@ function Logo({ item, large = false }) {
 
 function Modal({ children, onClose, wide = false }) {
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose}>
       <div
-        className={`modal-box ${wide ? "modal-wide" : ""}`}
+        className={`modal ${wide ? "wide" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button className="modal-close" onClick={onClose}>
@@ -306,68 +261,91 @@ function Modal({ children, onClose, wide = false }) {
   );
 }
 
-function StatusBadge({ connected }) {
+function Status({ connected }) {
   return (
-    <span className={`status-badge ${connected ? "connected" : "offline"}`}>
+    <span className={`status ${connected ? "on" : "off"}`}>
       <i />
       {connected ? "Connected" : "Not connected"}
     </span>
   );
 }
 
-/* =========================================================
-   MAIN APP
-========================================================= */
+function LeakTable({ resolved, onOpen }) {
+  return (
+    <div className="leak-table">
+      <div className="table-header">
+        <span>Leak</span>
+        <span>Customer</span>
+        <span>Source</span>
+        <span>Impact</span>
+        <span>Severity</span>
+        <span>Status</span>
+      </div>
+
+      {leaks.map((leak) => {
+        const done = resolved.includes(leak.id);
+
+        return (
+          <button
+            className="table-row"
+            key={leak.id}
+            onClick={() => onOpen(leak)}
+          >
+            <span>
+              <strong>{leak.title}</strong>
+              <small>{leak.signal}</small>
+            </span>
+
+            <span>{leak.customer}</span>
+            <span>{leak.source}</span>
+
+            <strong className="impact">{leak.amount}</strong>
+
+            <span>
+              <em className={`severity ${leak.severity.toLowerCase()}`}>
+                {leak.severity}
+              </em>
+            </span>
+
+            <span>
+              <em className={`leak-status ${done ? "resolved" : ""}`}>
+                {done ? "Resolved" : leak.status}
+              </em>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function App() {
   const [page, setPage] = useState("home");
-
   const [connected, setConnected] = useState([]);
-
-  const [selectedIntegration, setSelectedIntegration] = useState(null);
-  const [connectionMode, setConnectionMode] = useState("");
-
-  const [manualData, setManualData] = useState({});
-
+  const [integration, setIntegration] = useState(null);
+  const [mode, setMode] = useState("");
+  const [manual, setManual] = useState({});
   const [selectedLeak, setSelectedLeak] = useState(null);
-  const [resolvedLeaks, setResolvedLeaks] = useState([]);
-
+  const [resolved, setResolved] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [selectedPayment, setSelectedPayment] = useState(null);
 
-  const isConnected = (id) => connected.includes(id);
+  const connectedCheck = (id) => connected.includes(id);
 
-  const openIntegration = (integration) => {
-    setSelectedIntegration(integration);
-    setConnectionMode("");
-    setManualData({});
+  const connect = (id) => {
+    setConnected((old) => (old.includes(id) ? old : [...old, id]));
   };
 
-  const closeIntegration = () => {
-    setSelectedIntegration(null);
-    setConnectionMode("");
-    setManualData({});
-  };
-
-  const markConnected = (id) => {
-    setConnected((old) =>
-      old.includes(id) ? old : [...old, id]
-    );
-  };
-
-  const automaticConnection = () => {
-    markConnected(selectedIntegration.id);
-
+  const automaticConnect = () => {
+    connect(integration.id);
     alert(
-      `${selectedIntegration.name}\n\nAutomatic authorization started.\n\nDemo mode: real OAuth/API authorization will be handled by the LeakLeans backend.`
+      `${integration.name}\n\nDemo OAuth authorization started.\n\nProduction version will redirect the customer to the platform authorization page.`
     );
-
     closeIntegration();
   };
 
-  const manualConnection = () => {
-    const missing = selectedIntegration.fields.some(
-      ([key]) => !manualData[key]?.trim()
+  const manualConnect = () => {
+    const missing = integration.fields.some(
+      ([key]) => !manual[key]?.trim()
     );
 
     if (missing) {
@@ -375,64 +353,55 @@ export default function App() {
       return;
     }
 
-    markConnected(selectedIntegration.id);
+    connect(integration.id);
 
     alert(
-      `${selectedIntegration.name}\n\nManual connection saved in demo mode.\n\nNo credentials were sent to any external service.`
+      `${integration.name}\n\nManual connection saved in demo mode.\n\nNo credentials were sent to an external service.`
     );
 
     closeIntegration();
   };
 
-  const resolveLeak = (id) => {
-    setResolvedLeaks((old) =>
-      old.includes(id) ? old : [...old, id]
-    );
-    setSelectedLeak(null);
+  const closeIntegration = () => {
+    setIntegration(null);
+    setMode("");
+    setManual({});
   };
 
-  const choosePlan = (plan) => {
+  const selectPlan = (plan) => {
     setSelectedPlan(plan);
     setPage("billing");
   };
 
-  const startPayment = (provider) => {
+  const payment = (provider) => {
     if (!selectedPlan) {
-      alert("Please select a LeakLeans plan first.");
+      alert("Please select a plan first.");
       return;
     }
 
-    setSelectedPayment(provider);
-
     alert(
-      `${provider.name} selected for ${selectedPlan.name} — ${selectedPlan.price}/month.\n\nReal payment processing requires merchant onboarding and backend integration.`
+      `${provider.name} selected.\n\n${selectedPlan.name} Plan — ${selectedPlan.price}/month.\n\nProduction payment processing requires merchant onboarding and backend integration.`
     );
   };
 
-  /* =======================================================
-     LANDING PAGE
-  ======================================================= */
+  /* ================= LANDING ================= */
 
   if (page === "home") {
     return (
-      <div className="app">
-        <header className="site-header">
-          <div
-            className="brand clickable"
-            onClick={() => setPage("home")}
-          >
-            <div className="brand-symbol">L</div>
-
-            <div className="brand-copy">
-              <strong>LEAKLEANS</strong>
-              <span>Revenue Leakage Intelligence</span>
+      <div className="landing-page">
+        <header className="topbar">
+          <div className="logo-lockup" onClick={() => setPage("home")}>
+            <div className="logo-square">L</div>
+            <div>
+              <b>LEAKLEANS</b>
+              <small>Revenue Leakage Intelligence</small>
             </div>
           </div>
 
-          <div className="founder-details">
+          <div className="founder">
             <div>
               <small>FOUNDER</small>
-              <strong>ANIKET MOHITE</strong>
+              <b>ANIKET MOHITE</b>
             </div>
 
             <div>
@@ -449,172 +418,147 @@ export default function App() {
           </div>
 
           <button
-            className="button primary"
+            className="btn primary"
             onClick={() => setPage("dashboard")}
           >
             Open Dashboard
           </button>
         </header>
 
-        <main className="landing">
-          <section className="hero">
-            <div className="eyebrow">
-              REVENUE LEAKAGE INTELLIGENCE SYSTEM
+        <section className="hero">
+          <div className="hero-tag">
+            REVENUE LEAKAGE INTELLIGENCE SYSTEM
+          </div>
+
+          <h1>
+            Find Where Your
+            <span>Revenue Is Leaking.</span>
+          </h1>
+
+          <p>
+            LeakLeans connects with the systems your business already uses
+            and finds revenue leakage hiding between them.
+          </p>
+
+          <div className="hero-buttons">
+            <button
+              className="btn primary big"
+              onClick={() => setPage("dashboard")}
+            >
+              Start Detecting →
+            </button>
+
+            <button
+              className="btn secondary big"
+              onClick={() => setPage("integrations")}
+            >
+              Connect Systems
+            </button>
+          </div>
+
+          <div className="hero-stats">
+            <div>
+              <b>₹4.8Cr</b>
+              <span>Potential leakage</span>
             </div>
 
-            <h1>
-              Find Where Your
-              <span> Revenue Is Leaking.</span>
-            </h1>
+            <div>
+              <b>12,840</b>
+              <span>Signals analyzed</span>
+            </div>
 
+            <div>
+              <b>24/7</b>
+              <span>Monitoring</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="landing-section">
+          <div className="section-number">01</div>
+
+          <div className="section-title">
+            <h2>Connect Existing Business Systems</h2>
             <p>
-              LeakLeans connects with the business systems you already use
-              and finds revenue leakage hiding between them.
+              LeakLeans works as an intelligence layer above your existing
+              systems.
             </p>
+          </div>
 
-            <div className="hero-actions">
-              <button
-                className="button primary large-button"
-                onClick={() => setPage("dashboard")}
-              >
-                Start Detecting →
-              </button>
-
-              <button
-                className="button secondary large-button"
-                onClick={() => setPage("integrations")}
-              >
-                Connect Systems
-              </button>
-            </div>
-
-            <div className="hero-numbers">
-              <div>
-                <strong>₹4.8Cr</strong>
-                <span>Potential leakage detected</span>
-              </div>
-
-              <div>
-                <strong>12,840</strong>
-                <span>Signals analyzed</span>
-              </div>
-
-              <div>
-                <strong>24/7</strong>
-                <span>Continuous monitoring</span>
-              </div>
-            </div>
-          </section>
-
-          <section className="landing-section">
-            <div className="section-heading">
-              <span>01</span>
-              <div>
-                <h2>Connect Existing Business Systems</h2>
-                <p>
-                  LeakLeans sits above the systems your business already uses.
-                </p>
-              </div>
-            </div>
-
-            <div className="logo-preview-grid">
-              {integrations.slice(0, 6).map((item) => (
-                <div className="logo-preview-card" key={item.id}>
-                  <div className="logo-card-image">
-                    <Logo item={item} />
-                  </div>
-                  <strong>{item.name}</strong>
-                  <span>{item.category}</span>
+          <div className="logo-grid">
+            {integrations.slice(0, 6).map((item) => (
+              <div className="logo-tile" key={item.id}>
+                <div className="logo-white">
+                  <Logo item={item} />
                 </div>
-              ))}
+                <b>{item.name}</b>
+                <small>{item.category}</small>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="landing-section">
+          <div className="section-number">02</div>
+
+          <div className="section-title">
+            <h2>Detect → Investigate → Explain → Resolve</h2>
+            <p>
+              Turn disconnected business signals into measurable action.
+            </p>
+          </div>
+
+          <div className="process-grid">
+            {[
+              ["01", "Detect", "Find missed opportunities, delays and workflow gaps."],
+              ["02", "Investigate", "Connect signals across business systems."],
+              ["03", "Explain", "Show probable cause and potential business impact."],
+              ["04", "Resolve", "Recommend actions and measure recovered value."],
+            ].map(([num, title, text]) => (
+              <div className="process-card" key={num}>
+                <b>{num}</b>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="architecture-section">
+          <div className="architecture-card">
+            <span className="hero-tag">THE LEAKLEANS LAYER</span>
+
+            <h2>
+              Your CRM records what happened.
+              <span>LeakLeans looks for what was missed.</span>
+            </h2>
+
+            <div className="architecture">
+              <div>Salesforce</div>
+              <div>Genesys</div>
+              <div>WhatsApp</div>
+              <div>Avaya</div>
+              <div>CRM</div>
+
+              <strong>LEAKLEANS</strong>
+
+              <div>Detect</div>
+              <div>Investigate</div>
+              <div>Explain</div>
+              <div>Resolve</div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="landing-section">
-            <div className="section-heading">
-              <span>02</span>
-              <div>
-                <h2>Detect → Investigate → Explain → Resolve</h2>
-                <p>
-                  Turn disconnected business signals into measurable action.
-                </p>
-              </div>
-            </div>
-
-            <div className="process-grid">
-              <div className="process-card">
-                <b>01</b>
-                <h3>Detect</h3>
-                <p>
-                  Identify missed opportunities, delays, unusual activity
-                  and workflow gaps.
-                </p>
-              </div>
-
-              <div className="process-card">
-                <b>02</b>
-                <h3>Investigate</h3>
-                <p>
-                  Connect signals across CRM, calls, messaging and other
-                  business systems.
-                </p>
-              </div>
-
-              <div className="process-card">
-                <b>03</b>
-                <h3>Explain</h3>
-                <p>
-                  Show probable cause, affected workflow and potential
-                  business impact.
-                </p>
-              </div>
-
-              <div className="process-card">
-                <b>04</b>
-                <h3>Resolve</h3>
-                <p>
-                  Recommend or automate an action and measure recovered value.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="landing-section product-position">
-            <div className="position-card">
-              <span className="eyebrow">THE LEAKLEANS LAYER</span>
-              <h2>
-                Your CRM records what happened.
-                <br />
-                <span>LeakLeans looks for what was missed.</span>
-              </h2>
-
-              <div className="architecture">
-                <div>Salesforce</div>
-                <div>Genesys</div>
-                <div>WhatsApp</div>
-                <div>Avaya</div>
-                <div>CRM</div>
-                <div className="architecture-main">
-                  LEAKLEANS
-                </div>
-                <div>Detect</div>
-                <div>Investigate</div>
-                <div>Explain</div>
-                <div>Resolve</div>
-              </div>
-            </div>
-          </section>
-        </main>
-
-        <footer className="site-footer">
-          <div className="footer-brand">
-            <strong>LEAKLEANS</strong>
+        <footer className="footer">
+          <div>
+            <b>LEAKLEANS</b>
             <span>Find Where Your Revenue Is Leaking.</span>
           </div>
 
           <div>
             <small>FOUNDER</small>
-            <strong>ANIKET MOHITE</strong>
+            <b>ANIKET MOHITE</b>
           </div>
 
           <div>
@@ -633,109 +577,61 @@ export default function App() {
     );
   }
 
-  /* =======================================================
-     APP SHELL
-  ======================================================= */
+  /* ================= APP ================= */
 
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="sidebar-top">
-          <div
-            className="sidebar-brand clickable"
-            onClick={() => setPage("home")}
-          >
-            <div className="brand-symbol">L</div>
-            <strong>LEAKLEANS</strong>
+        <div>
+          <div className="side-brand" onClick={() => setPage("home")}>
+            <div className="logo-square">L</div>
+            <b>LEAKLEANS</b>
           </div>
 
-          <div className="sidebar-label">
-            INTELLIGENCE PLATFORM
-          </div>
+          <small className="side-label">INTELLIGENCE PLATFORM</small>
 
-          <nav className="sidebar-nav">
-            <button
-              className={page === "dashboard" ? "active" : ""}
-              onClick={() => setPage("dashboard")}
-            >
-              <span>⌂</span>
-              Dashboard
-            </button>
-
-            <button
-              className={page === "leaks" ? "active" : ""}
-              onClick={() => setPage("leaks")}
-            >
-              <span>◈</span>
-              Revenue Leaks
-              <em>24</em>
-            </button>
-
-            <button
-              className={page === "integrations" ? "active" : ""}
-              onClick={() => setPage("integrations")}
-            >
-              <span>◎</span>
-              Integrations
-            </button>
-
-            <button
-              className={page === "analytics" ? "active" : ""}
-              onClick={() => setPage("analytics")}
-            >
-              <span>◒</span>
-              Analytics
-            </button>
-
-            <button
-              className={page === "actions" ? "active" : ""}
-              onClick={() => setPage("actions")}
-            >
-              <span>→</span>
-              Actions
-            </button>
-
-            <button
-              className={page === "billing" ? "active" : ""}
-              onClick={() => setPage("billing")}
-            >
-              <span>₹</span>
-              Billing
-            </button>
-
-            <button
-              className={page === "settings" ? "active" : ""}
-              onClick={() => setPage("settings")}
-            >
-              <span>⚙</span>
-              Settings
-            </button>
+          <nav>
+            {[
+              ["dashboard", "⌂", "Dashboard"],
+              ["leaks", "◈", "Revenue Leaks"],
+              ["integrations", "◎", "Integrations"],
+              ["analytics", "◒", "Analytics"],
+              ["actions", "→", "Actions"],
+              ["billing", "₹", "Billing"],
+              ["settings", "⚙", "Settings"],
+            ].map(([id, icon, label]) => (
+              <button
+                key={id}
+                className={page === id ? "active" : ""}
+                onClick={() => setPage(id)}
+              >
+                <span>{icon}</span>
+                {label}
+                {id === "leaks" && <em>24</em>}
+              </button>
+            ))}
           </nav>
         </div>
 
-        <div className="sidebar-bottom">
-          <div className="sidebar-founder">
+        <div className="side-bottom">
+          <div className="profile">
             <div className="avatar">AM</div>
             <div>
-              <strong>ANIKET MOHITE</strong>
-              <span>Founder · LeakLeans</span>
+              <b>ANIKET MOHITE</b>
+              <small>Founder · LeakLeans</small>
             </div>
           </div>
 
-          <button
-            className="website-button"
-            onClick={() => setPage("home")}
-          >
+          <button className="website" onClick={() => setPage("home")}>
             ← Website
           </button>
         </div>
       </aside>
 
-      <main className="main">
-        <header className="dashboard-header">
+      <main className="main-content">
+        <header className="dashboard-top">
           <div>
-            <span className="eyebrow">LEAKLEANS INTELLIGENCE</span>
-
+            <span className="hero-tag">LEAKLEANS INTELLIGENCE</span>
             <h1>
               {page === "dashboard" && "Revenue Overview"}
               {page === "leaks" && "Revenue Leaks"}
@@ -747,56 +643,54 @@ export default function App() {
             </h1>
           </div>
 
-          <div className="header-user">
+          <div className="user-top">
             <div className="avatar">AM</div>
             <div>
-              <strong>ANIKET MOHITE</strong>
-              <span>Founder</span>
+              <b>ANIKET MOHITE</b>
+              <small>Founder</small>
             </div>
           </div>
         </header>
 
-        {/* =================================================
-            DASHBOARD
-        ================================================= */}
+        {/* DASHBOARD */}
 
         {page === "dashboard" && (
           <div className="content">
-            <div className="metric-grid">
-              <div className="metric-card">
+            <div className="metrics">
+              <div>
                 <span>Potential Leakage</span>
-                <strong>₹4.8Cr</strong>
+                <b>₹4.8Cr</b>
                 <small>Across detected signals</small>
               </div>
 
-              <div className="metric-card">
+              <div>
                 <span>Open Leaks</span>
-                <strong>24</strong>
+                <b>24</b>
                 <small>Requiring investigation</small>
               </div>
 
-              <div className="metric-card">
+              <div>
                 <span>Recovered Value</span>
-                <strong>₹82L</strong>
+                <b>₹82L</b>
                 <small>Tracked by LeakLeans</small>
               </div>
 
-              <div className="metric-card">
+              <div>
                 <span>Systems Connected</span>
-                <strong>{connected.length}</strong>
-                <small>of {integrations.length} systems</small>
+                <b>{connected.length}</b>
+                <small>of {integrations.length}</small>
               </div>
             </div>
 
             <section className="dashboard-section">
-              <div className="section-title-row">
+              <div className="section-bar">
                 <div>
-                  <span className="eyebrow">DETECTION ENGINE</span>
+                  <span className="hero-tag">DETECTION ENGINE</span>
                   <h2>Latest Revenue Leaks</h2>
                 </div>
 
                 <button
-                  className="text-button"
+                  className="text-btn"
                   onClick={() => setPage("leaks")}
                 >
                   View all →
@@ -804,43 +698,41 @@ export default function App() {
               </div>
 
               <LeakTable
-                resolved={resolvedLeaks}
-                onSelect={setSelectedLeak}
+                resolved={resolved}
+                onOpen={setSelectedLeak}
               />
             </section>
 
             <section className="dashboard-section">
-              <div className="section-title-row">
+              <div className="section-bar">
                 <div>
-                  <span className="eyebrow">DATA SOURCES</span>
-                  <h2>Your Connected Systems</h2>
+                  <span className="hero-tag">DATA SOURCES</span>
+                  <h2>Connected Systems</h2>
                 </div>
 
                 <button
-                  className="text-button"
+                  className="text-btn"
                   onClick={() => setPage("integrations")}
                 >
                   Manage →
                 </button>
               </div>
 
-              <div className="connected-strip">
+              <div className="mini-systems">
                 {integrations.slice(0, 6).map((item) => (
-                  <div className="connected-mini" key={item.id}>
+                  <div key={item.id}>
                     <Logo item={item} />
-
-                    <div>
-                      <strong>{item.name}</strong>
-                      <span>
-                        {isConnected(item.id)
+                    <span>
+                      <b>{item.name}</b>
+                      <small>
+                        {connectedCheck(item.id)
                           ? "Connected"
                           : "Not connected"}
-                      </span>
-                    </div>
-
+                      </small>
+                    </span>
                     <i
                       className={
-                        isConnected(item.id) ? "live-dot" : "dead-dot"
+                        connectedCheck(item.id) ? "live" : "dead"
                       }
                     />
                   </div>
@@ -850,14 +742,12 @@ export default function App() {
           </div>
         )}
 
-        {/* =================================================
-            LEAKS
-        ================================================= */}
+        {/* LEAKS */}
 
         {page === "leaks" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">DETECTION ENGINE</span>
+              <span className="hero-tag">DETECTION ENGINE</span>
               <h2>Potential Revenue Leakage</h2>
               <p>
                 Investigate signals detected across your connected systems.
@@ -865,55 +755,54 @@ export default function App() {
             </div>
 
             <LeakTable
-              resolved={resolvedLeaks}
-              onSelect={setSelectedLeak}
+              resolved={resolved}
+              onOpen={setSelectedLeak}
             />
           </div>
         )}
 
-        {/* =================================================
-            INTEGRATIONS
-        ================================================= */}
+        {/* INTEGRATIONS */}
 
         {page === "integrations" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">SYSTEM CONNECTIONS</span>
+              <span className="hero-tag">SYSTEM CONNECTIONS</span>
               <h2>Connect Your Existing Systems</h2>
               <p>
-                Use automatic authorization where available or enter the
-                required API connection information manually.
+                Connect automatically through authorization or enter
+                platform-specific API details manually.
               </p>
             </div>
 
             <div className="integration-grid">
               {integrations.map((item) => (
                 <div className="integration-card" key={item.id}>
-                  <div className="integration-card-head">
-                    <div className="integration-logo-box">
+                  <div className="integration-top">
+                    <div className="integration-logo">
                       <Logo item={item} large />
                     </div>
 
-                    <span className="category">
-                      {item.category}
-                    </span>
+                    <span>{item.category}</span>
                   </div>
 
                   <h3>{item.name}</h3>
-
                   <p>{item.description}</p>
 
-                  <StatusBadge connected={isConnected(item.id)} />
+                  <Status connected={connectedCheck(item.id)} />
 
                   <button
-                    className={`button ${
-                      isConnected(item.id)
+                    className={`btn ${
+                      connectedCheck(item.id)
                         ? "secondary"
                         : "primary"
-                    } full"
-                    onClick={() => openIntegration(item)}
+                    } full`}
+                    onClick={() => {
+                      setIntegration(item);
+                      setMode("");
+                      setManual({});
+                    }}
                   >
-                    {isConnected(item.id)
+                    {connectedCheck(item.id)
                       ? "Manage Connection"
                       : "Connect System"}
                   </button>
@@ -921,74 +810,56 @@ export default function App() {
               ))}
             </div>
 
-            <div className="integration-note">
-              <strong>🔒 Security architecture</strong>
+            <div className="security-note">
+              <b>🔒 Secure connection architecture</b>
               <p>
-                Production LeakLeans should use OAuth where supported and
-                send manual credentials to a secure backend. Customer
-                passwords should never be requested by LeakLeans.
+                Production LeakLeans should use OAuth where available.
+                Customer platform passwords should never be requested.
+                Manual credentials should be sent to a secure backend and
+                encrypted.
               </p>
             </div>
           </div>
         )}
 
-        {/* =================================================
-            ANALYTICS
-        ================================================= */}
+        {/* ANALYTICS */}
 
         {page === "analytics" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">BUSINESS IMPACT</span>
+              <span className="hero-tag">BUSINESS IMPACT</span>
               <h2>Leakage Analytics</h2>
               <p>
                 Understand where potential revenue loss is originating.
               </p>
             </div>
 
-            <div className="analytics-grid">
+            <div className="analytics">
               <div className="analytics-card">
                 <span>Potential leakage by category</span>
 
-                <div className="bar-row">
-                  <label>Follow-up Failure</label>
-                  <div className="bar">
-                    <i style={{ width: "90%" }} />
+                {[
+                  ["Follow-up Failure", "₹2.1Cr", "90%"],
+                  ["Missed Calls", "₹1.4Cr", "66%"],
+                  ["Response Delay", "₹78L", "46%"],
+                  ["Workflow Gaps", "₹56L", "34%"],
+                ].map(([name, amount, width]) => (
+                  <div className="bar-row" key={name}>
+                    <label>{name}</label>
+                    <div>
+                      <i style={{ width }} />
+                    </div>
+                    <b>{amount}</b>
                   </div>
-                  <strong>₹2.1Cr</strong>
-                </div>
-
-                <div className="bar-row">
-                  <label>Missed Calls</label>
-                  <div className="bar">
-                    <i style={{ width: "66%" }} />
-                  </div>
-                  <strong>₹1.4Cr</strong>
-                </div>
-
-                <div className="bar-row">
-                  <label>Response Delay</label>
-                  <div className="bar">
-                    <i style={{ width: "46%" }} />
-                  </div>
-                  <strong>₹78L</strong>
-                </div>
-
-                <div className="bar-row">
-                  <label>Workflow Gaps</label>
-                  <div className="bar">
-                    <i style={{ width: "34%" }} />
-                  </div>
-                  <strong>₹56L</strong>
-                </div>
+                ))}
               </div>
 
-              <div className="analytics-card highlight">
+              <div className="analytics-card recovery">
                 <span>Recovery rate</span>
-                <strong>17.2%</strong>
+                <b>17.2%</b>
                 <p>
-                  Demonstration metric showing recovered value from
-                  identified leakage opportunities.
+                  Demonstration metric for value recovered from identified
+                  leakage opportunities.
                 </p>
               </div>
             </div>
@@ -996,77 +867,85 @@ export default function App() {
             <div className="signal-grid">
               <div>
                 <span>Sales signals</span>
-                <strong>4,821</strong>
+                <b>4,821</b>
               </div>
               <div>
                 <span>Call signals</span>
-                <strong>3,204</strong>
+                <b>3,204</b>
               </div>
               <div>
                 <span>Message signals</span>
-                <strong>2,981</strong>
+                <b>2,981</b>
               </div>
               <div>
                 <span>Workflow signals</span>
-                <strong>1,834</strong>
+                <b>1,834</b>
               </div>
             </div>
           </div>
         )}
 
-        {/* =================================================
-            ACTIONS
-        ================================================= */}
+        {/* ACTIONS */}
 
         {page === "actions" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">RESOLUTION ENGINE</span>
+              <span className="hero-tag">RESOLUTION ENGINE</span>
               <h2>Recommended Actions</h2>
               <p>
-                Convert detected leakage into business action.
+                Convert detected leakage into measurable business action.
               </p>
             </div>
 
-            <div className="action-list">
-              <Action
-                number="01"
-                title="Assign missed leads automatically"
-                description="Route unowned leads to the appropriate sales representative."
-              />
+            <div className="actions">
+              {[
+                [
+                  "01",
+                  "Assign missed leads automatically",
+                  "Route unowned leads to the appropriate sales representative.",
+                ],
+                [
+                  "02",
+                  "Trigger follow-up notifications",
+                  "Notify responsible teams when customers are waiting.",
+                ],
+                [
+                  "03",
+                  "Escalate high-value opportunities",
+                  "Prioritize leakage opportunities with significant potential impact.",
+                ],
+                [
+                  "04",
+                  "Monitor unresolved conversations",
+                  "Continue monitoring until the customer interaction receives an outcome.",
+                ],
+              ].map(([num, title, text]) => (
+                <div className="action-card" key={num}>
+                  <div className="action-number">{num}</div>
 
-              <Action
-                number="02"
-                title="Trigger follow-up notifications"
-                description="Notify responsible teams when customers are waiting."
-              />
+                  <div>
+                    <b>{title}</b>
+                    <p>{text}</p>
+                  </div>
 
-              <Action
-                number="03"
-                title="Escalate high-value opportunities"
-                description="Prioritize leakage opportunities with significant potential impact."
-              />
-
-              <Action
-                number="04"
-                title="Monitor unresolved conversations"
-                description="Continue monitoring until the customer interaction receives an outcome."
-              />
+                  <button className="btn secondary">
+                    Review
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* =================================================
-            BILLING
-        ================================================= */}
+        {/* BILLING */}
 
         {page === "billing" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">SUBSCRIPTION</span>
-              <h2>LeakLeans Billing</h2>
+              <span className="hero-tag">SUBSCRIPTION</span>
+              <h2>LeakLeans Billing & Payments</h2>
               <p>
-                Choose a LeakLeans plan and select your payment provider.
+                Select a plan and choose the appropriate payment provider.
               </p>
             </div>
 
@@ -1079,34 +958,34 @@ export default function App() {
                   key={plan.id}
                 >
                   {plan.popular && (
-                    <div className="popular-label">
+                    <span className="popular-label">
                       BUSINESS
-                    </div>
+                    </span>
                   )}
 
                   <span className="plan-name">{plan.name}</span>
 
-                  <div className="plan-price">
+                  <h3>
                     {plan.price}
-                    <small>{plan.period}</small>
-                  </div>
+                    <small>/month</small>
+                  </h3>
 
                   <p>{plan.description}</p>
 
-                  <div className="plan-features">
+                  <div className="features">
                     {plan.features.map((feature) => (
-                      <div key={feature}>
-                        <i>✓</i>
-                        <span>{feature}</span>
-                      </div>
+                      <span key={feature}>
+                        <b>✓</b>
+                        {feature}
+                      </span>
                     ))}
                   </div>
 
                   <button
-                    className={`button ${
+                    className={`btn ${
                       plan.popular ? "primary" : "secondary"
                     } full`}
-                    onClick={() => choosePlan(plan)}
+                    onClick={() => selectPlan(plan)}
                   >
                     Choose {plan.name}
                   </button>
@@ -1115,10 +994,10 @@ export default function App() {
             </div>
 
             {selectedPlan && (
-              <div className="checkout-section">
-                <div className="checkout-heading">
+              <div className="checkout">
+                <div className="checkout-head">
                   <div>
-                    <span className="eyebrow">CHECKOUT</span>
+                    <span className="hero-tag">CHECKOUT</span>
                     <h2>{selectedPlan.name} Plan</h2>
                   </div>
 
@@ -1128,31 +1007,25 @@ export default function App() {
                   </strong>
                 </div>
 
-                <div className="payment-region">
+                <div className="payment-columns">
                   <div>
-                    <span className="region-title">
-                      🇮🇳 INDIA
-                    </span>
+                    <h3>🇮🇳 India</h3>
 
                     <PaymentCard
-                      provider={paymentProviders[0]}
-                      selected={selectedPayment}
-                      onClick={startPayment}
+                      provider={payments[0]}
+                      onClick={payment}
                     />
                   </div>
 
                   <div>
-                    <span className="region-title">
-                      🌎 INTERNATIONAL
-                    </span>
+                    <h3>🌎 International</h3>
 
-                    <div className="international-payment-grid">
-                      {paymentProviders.slice(1).map((provider) => (
+                    <div className="payment-list">
+                      {payments.slice(1).map((provider) => (
                         <PaymentCard
                           key={provider.id}
                           provider={provider}
-                          selected={selectedPayment}
-                          onClick={startPayment}
+                          onClick={payment}
                         />
                       ))}
                     </div>
@@ -1160,325 +1033,267 @@ export default function App() {
                 </div>
 
                 <div className="payment-security">
-                  <span>🔒 Secure payment architecture</span>
-                  <p>
-                    LeakLeans should never store customer card information.
-                    Production checkout will be handled by the selected
-                    payment provider.
-                  </p>
+                  🔒 Production checkout will be handled by the selected
+                  payment provider. LeakLeans should not store card details.
                 </div>
               </div>
             )}
 
-            <div className="billing-info">
+            <div className="billing-summary">
               <div>
                 <span>Current plan</span>
-                <strong>
+                <b>
                   {selectedPlan
                     ? selectedPlan.name
                     : "No active subscription"}
-                </strong>
+                </b>
               </div>
 
               <div>
                 <span>Payment status</span>
-                <strong>Demo / Not activated</strong>
+                <b>Demo / Not activated</b>
               </div>
 
               <div>
                 <span>Billing cycle</span>
-                <strong>Monthly</strong>
+                <b>Monthly</b>
               </div>
             </div>
           </div>
         )}
 
-        {/* =================================================
-            SETTINGS
-        ================================================= */}
+        {/* SETTINGS */}
 
         {page === "settings" && (
           <div className="content">
             <div className="page-intro">
-              <span className="eyebrow">WORKSPACE</span>
-              <h2>Settings</h2>
+              <span className="hero-tag">WORKSPACE</span>
+              <h2>Workspace Settings</h2>
               <p>Manage your LeakLeans workspace information.</p>
             </div>
 
             <div className="settings-grid">
-              <div className="settings-card">
+              <div>
                 <span>Founder</span>
-                <strong>ANIKET MOHITE</strong>
+                <b>ANIKET MOHITE</b>
               </div>
 
-              <div className="settings-card">
+              <div>
                 <span>Contact</span>
-                <strong>8698382024</strong>
+                <b>8698382024</b>
               </div>
 
-              <div className="settings-card">
+              <div>
                 <span>Email</span>
-                <strong>
-                  Aniket.Mohite@supportleaklens.com
-                </strong>
+                <b>Aniket.Mohite@supportleaklens.com</b>
               </div>
 
-              <div className="settings-card">
-                <span>Company</span>
-                <strong>LeakLeans</strong>
+              <div>
+                <span>Product</span>
+                <b>LeakLeans</b>
               </div>
             </div>
 
-            <div className="settings-large">
-              <span className="eyebrow">PLATFORM</span>
+            <div className="settings-description">
+              <span className="hero-tag">PLATFORM</span>
               <h3>Revenue Leakage Intelligence</h3>
-
               <p>
-                LeakLeans is designed as an intelligence layer over existing
-                business systems. It does not replace the customer's CRM,
-                contact center or communication platform.
+                LeakLeans is an intelligence layer over existing business
+                systems. It does not replace the customer's CRM, contact
+                center or communication platform.
               </p>
             </div>
           </div>
         )}
       </main>
 
-      {/* =====================================================
-          INTEGRATION MODAL
-      ===================================================== */}
+      {/* CONNECTION MODAL */}
 
-      {selectedIntegration && (
+      {integration && (
         <Modal onClose={closeIntegration}>
-          <div className="modal-brand">
+          <div className="modal-title">
             <div className="modal-logo">
-              <Logo item={selectedIntegration} large />
+              <Logo item={integration} large />
             </div>
 
             <div>
-              <span className="eyebrow">
-                SYSTEM CONNECTION
-              </span>
-              <h2>{selectedIntegration.name}</h2>
+              <span className="hero-tag">SYSTEM CONNECTION</span>
+              <h2>{integration.name}</h2>
             </div>
           </div>
 
-          {!connectionMode && (
+          {!mode && (
             <>
-              <p className="modal-description">
-                Choose how you want to connect{" "}
-                <strong>{selectedIntegration.name}</strong>{" "}
-                to LeakLeans.
+              <p className="modal-text">
+                Choose how you want to connect this system to LeakLeans.
               </p>
 
-              <div className="connection-options">
-                <button
-                  className="connection-option"
-                  onClick={() =>
-                    setConnectionMode("automatic")
-                  }
-                >
-                  <div className="option-icon">⚡</div>
-
+              <div className="connect-options">
+                <button onClick={() => setMode("automatic")}>
+                  <span>⚡</span>
                   <div>
-                    <strong>Connect Automatically</strong>
-                    <span>
-                      Recommended. Authorize LeakLeans through
-                      the platform.
-                    </span>
+                    <b>Connect Automatically</b>
+                    <small>
+                      Recommended. Authorize LeakLeans through the platform.
+                    </small>
                   </div>
-
-                  <b>→</b>
+                  <strong>→</strong>
                 </button>
 
-                <button
-                  className="connection-option"
-                  onClick={() =>
-                    setConnectionMode("manual")
-                  }
-                >
-                  <div className="option-icon">🔑</div>
-
+                <button onClick={() => setMode("manual")}>
+                  <span>🔑</span>
                   <div>
-                    <strong>Enter Manually</strong>
-                    <span>
-                      Enter the API or connection details
-                      provided by your administrator.
-                    </span>
+                    <b>Enter Manually</b>
+                    <small>
+                      Enter API or connection details supplied by your
+                      administrator.
+                    </small>
                   </div>
-
-                  <b>→</b>
+                  <strong>→</strong>
                 </button>
               </div>
 
-              <div className="security-box">
-                <strong>🔒 Secure connection</strong>
+              <div className="modal-security">
+                <b>🔒 Secure authorization</b>
                 <span>
-                  LeakLeans should never ask customers for their
-                  normal platform password.
+                  LeakLeans should never request the customer's normal
+                  platform password.
                 </span>
               </div>
             </>
           )}
 
-          {connectionMode === "automatic" && (
+          {mode === "automatic" && (
             <div className="connection-method">
-              <button
-                className="back-link"
-                onClick={() => setConnectionMode("")}
-              >
+              <button className="back" onClick={() => setMode("")}>
                 ← Back
               </button>
 
               <h3>Automatic Authorization</h3>
 
               <p>
-                In the production version, LeakLeans will redirect
-                you to the platform's authorization page.
+                In production, the customer will be redirected to the
+                platform's official authorization page.
               </p>
 
               <div className="oauth-steps">
-                <div>
-                  <b>01</b>
-                  <span>Sign in to your platform account.</span>
-                </div>
-
-                <div>
-                  <b>02</b>
-                  <span>Review LeakLeans permissions.</span>
-                </div>
-
-                <div>
-                  <b>03</b>
-                  <span>Approve the connection.</span>
-                </div>
-
-                <div>
-                  <b>04</b>
-                  <span>Return to LeakLeans.</span>
-                </div>
+                <span><b>01</b> Sign in to the platform.</span>
+                <span><b>02</b> Review LeakLeans permissions.</span>
+                <span><b>03</b> Approve access.</span>
+                <span><b>04</b> Return to LeakLeans.</span>
               </div>
 
               <button
-                className="button primary full"
-                onClick={automaticConnection}
+                className="btn primary full"
+                onClick={automaticConnect}
               >
-                Continue to {selectedIntegration.name} →
+                Continue to {integration.name} →
               </button>
 
-              <small className="demo-warning">
-                Demo mode — real OAuth/API authorization is not
-                connected yet.
+              <small className="demo">
+                Demo mode — real OAuth/API authorization is not connected yet.
               </small>
             </div>
           )}
 
-          {connectionMode === "manual" && (
+          {mode === "manual" && (
             <div className="connection-method">
-              <button
-                className="back-link"
-                onClick={() => setConnectionMode("")}
-              >
+              <button className="back" onClick={() => setMode("")}>
                 ← Back
               </button>
 
               <h3>Manual Connection</h3>
 
               <p>
-                Enter the connection information supplied by your
-                system administrator.
+                Enter the connection information supplied by the system
+                administrator.
               </p>
 
-              <div className="manual-form">
-                {selectedIntegration.fields.map(
-                  ([key, label, placeholder]) => {
-                    const secret =
-                      key.toLowerCase().includes("secret") ||
-                      key.toLowerCase().includes("token") ||
-                      key.toLowerCase().includes("key");
+              <div className="form">
+                {integration.fields.map(([key, label, placeholder]) => {
+                  const secret =
+                    key.toLowerCase().includes("secret") ||
+                    key.toLowerCase().includes("token") ||
+                    key.toLowerCase().includes("key");
 
-                    return (
-                      <label key={key}>
-                        <span>{label}</span>
+                  return (
+                    <label key={key}>
+                      <span>{label}</span>
 
-                        <input
-                          type={secret ? "password" : "text"}
-                          placeholder={placeholder}
-                          value={manualData[key] || ""}
-                          onChange={(e) =>
-                            setManualData({
-                              ...manualData,
-                              [key]: e.target.value,
-                            })
-                          }
-                        />
-                      </label>
-                    );
-                  }
-                )}
+                      <input
+                        type={secret ? "password" : "text"}
+                        placeholder={placeholder}
+                        value={manual[key] || ""}
+                        onChange={(e) =>
+                          setManual({
+                            ...manual,
+                            [key]: e.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                  );
+                })}
               </div>
 
-              <div className="security-box">
-                <strong>🔒 Production security</strong>
+              <div className="modal-security">
+                <b>🔒 Production security</b>
                 <span>
-                  These demo fields are not connected to an
-                  external service. Production credentials should
-                  be sent directly to a secure LeakLeans backend
-                  and encrypted.
+                  Demo fields are not sent anywhere. Production credentials
+                  should be transmitted to a secure backend and encrypted.
                 </span>
               </div>
 
               <button
-                className="button primary full"
-                onClick={manualConnection}
+                className="btn primary full"
+                onClick={manualConnect}
               >
                 Save & Connect
               </button>
 
-              <small className="demo-warning">
-                Demo mode — information entered here is not sent
-                anywhere.
+              <small className="demo">
+                Demo mode — information entered here is not sent anywhere.
               </small>
             </div>
           )}
         </Modal>
       )}
 
-      {/* =====================================================
-          LEAK INVESTIGATION MODAL
-      ===================================================== */}
+      {/* INVESTIGATION MODAL */}
 
       {selectedLeak && (
-        <Modal onClose={() => setSelectedLeak(null)} wide>
-          <div className="investigation-header">
+        <Modal
+          wide
+          onClose={() => setSelectedLeak(null)}
+        >
+          <div className="investigation-head">
             <div>
-              <span className="eyebrow">
-                LEAK INVESTIGATION
-              </span>
+              <span className="hero-tag">LEAK INVESTIGATION</span>
               <h2>{selectedLeak.title}</h2>
             </div>
 
             <strong>{selectedLeak.amount}</strong>
           </div>
 
-          <div className="investigation-meta">
+          <div className="investigation-grid">
             <div>
               <span>Customer</span>
-              <strong>{selectedLeak.customer}</strong>
+              <b>{selectedLeak.customer}</b>
             </div>
 
             <div>
               <span>Source</span>
-              <strong>{selectedLeak.source}</strong>
+              <b>{selectedLeak.source}</b>
             </div>
 
             <div>
               <span>Signal</span>
-              <strong>{selectedLeak.signal}</strong>
+              <b>{selectedLeak.signal}</b>
             </div>
 
             <div>
               <span>Severity</span>
-              <strong>{selectedLeak.severity}</strong>
+              <b>{selectedLeak.severity}</b>
             </div>
           </div>
 
@@ -1490,8 +1305,8 @@ export default function App() {
           <div className="investigation-block">
             <span>BUSINESS IMPACT</span>
             <p>
-              Potential revenue opportunity associated with this
-              signal: <strong>{selectedLeak.amount}</strong>.
+              Potential revenue opportunity associated with this signal:
+              <strong>{selectedLeak.amount}</strong>.
             </p>
           </div>
 
@@ -1501,8 +1316,15 @@ export default function App() {
           </div>
 
           <button
-            className="button primary full"
-            onClick={() => resolveLeak(selectedLeak.id)}
+            className="btn primary full"
+            onClick={() => {
+              setResolved((old) =>
+                old.includes(selectedLeak.id)
+                  ? old
+                  : [...old, selectedLeak.id]
+              );
+              setSelectedLeak(null);
+            }}
           >
             Mark Resolution Complete
           </button>
@@ -1512,112 +1334,20 @@ export default function App() {
   );
 }
 
-/* =========================================================
-   TABLE
-========================================================= */
-
-function LeakTable({ resolved, onSelect }) {
+function PaymentCard({ provider, onClick }) {
   return (
-    <div className="table-card">
-      <div className="table-head">
-        <span>Revenue Leak</span>
-        <span>Customer</span>
-        <span>Source</span>
-        <span>Potential Impact</span>
-        <span>Severity</span>
-        <span>Status</span>
-      </div>
-
-      {demoLeaks.map((leak) => {
-        const isResolved = resolved.includes(leak.id);
-
-        return (
-          <button
-            className="table-row"
-            key={leak.id}
-            onClick={() => onSelect(leak)}
-          >
-            <span>
-              <strong>{leak.title}</strong>
-              <small>{leak.signal}</small>
-            </span>
-
-            <span>{leak.customer}</span>
-
-            <span>{leak.source}</span>
-
-            <span className="table-impact">
-              {leak.amount}
-            </span>
-
-            <span>
-              <i
-                className={`severity ${leak.severity.toLowerCase()}`}
-              >
-                {leak.severity}
-              </i>
-            </span>
-
-            <span>
-              <i
-                className={`table-status ${
-                  isResolved ? "resolved" : ""
-                }`}
-              >
-                {isResolved ? "Resolved" : leak.status}
-              </i>
-            </span>
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-/* =========================================================
-   ACTION
-========================================================= */
-
-function Action({ number, title, description }) {
-  return (
-    <div className="action-card">
-      <div className="action-number">{number}</div>
-
-      <div className="action-content">
-        <strong>{title}</strong>
-        <p>{description}</p>
-      </div>
-
-      <button className="button secondary">
-        Review
-      </button>
-    </div>
-  );
-}
-
-/* =========================================================
-   PAYMENT CARD
-========================================================= */
-
-function PaymentCard({ provider, selected, onClick }) {
-  return (
-    <button
-      className={`payment-card ${
-        selected?.id === provider.id ? "selected" : ""
-      }`}
-      onClick={() => onClick(provider)}
-    >
+    <button className="payment-card" onClick={() => onClick(provider)}>
       <div className="payment-logo">
         <Logo item={provider} />
       </div>
 
-      <div className="payment-content">
-        <strong>{provider.name}</strong>
-        <span>{provider.description}</span>
-        <small>{provider.methods}</small>
+      <div>
+        <b>{provider.name}</b>
+        <small>{provider.region}</small>
+        <span>{provider.methods}</span>
       </div>
 
-      <b>→</b>
+      <strong>→</strong>
     </button>
   );
 }

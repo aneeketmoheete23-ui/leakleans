@@ -1,143 +1,157 @@
 import React, { useState } from "react";
-import "./App.css";
 
 const systems = [
-  {
-    id: "salesforce",
-    name: "Salesforce",
-    category: "CRM",
-    description: "Leads, opportunities, accounts and sales activity",
-    icon: "S",
-  },
-  {
-    id: "genesys",
-    name: "Genesys",
-    category: "Contact Center",
-    description: "Calls, interactions, queues and agent activity",
-    icon: "G",
-  },
-  {
-    id: "avaya",
-    name: "Avaya",
-    category: "Contact Center",
-    description: "Customer calls, agent activity and interactions",
-    icon: "A",
-  },
-  {
-    id: "crm",
-    name: "Other CRM",
-    category: "CRM",
-    description: "Connect your existing CRM system",
-    icon: "C",
-  },
-  {
-    id: "whatsapp",
-    name: "WhatsApp",
-    category: "Communication",
-    description: "Customer messages and conversations",
-    icon: "W",
-  },
-  {
-    id: "email",
-    name: "Email",
-    category: "Communication",
-    description: "Customer emails and response activity",
-    icon: "E",
-  },
-  {
-    id: "helpdesk",
-    name: "Helpdesk",
-    category: "Support",
-    description: "Tickets, complaints and support activity",
-    icon: "H",
-  },
-  {
-    id: "orders",
-    name: "Sales & Orders",
-    category: "Business Data",
-    description: "Orders, quotes and transaction activity",
-    icon: "O",
-  },
+  { name: "Salesforce", type: "salesforce", description: "CRM & customer activity" },
+  { name: "Genesys", type: "genesys", description: "Calls & customer interactions" },
+  { name: "Avaya", type: "avaya", description: "Voice & contact center" },
+  { name: "WhatsApp", type: "whatsapp", description: "Customer conversations" },
+  { name: "Email", type: "email", description: "Email communication" },
+  { name: "Helpdesk", type: "helpdesk", description: "Support tickets" },
+  { name: "Other CRM", type: "crm", description: "CRM & customer data" },
+  { name: "Sales & Orders", type: "orders", description: "Sales and order activity" },
 ];
 
 const leaks = [
   {
-    id: 1,
     title: "Follow-up Failure",
     severity: "High",
     value: "₹1.84L",
-    source: "Salesforce + Genesys",
-    description:
-      "A customer enquiry was followed by a sales call and quote, but no follow-up activity was detected.",
-    cause: "Possible workflow handoff gap",
-    action: "Automatically assign the follow-up and notify the responsible team.",
+    sources: "Salesforce + Genesys",
+    cause: "Lead was contacted but no follow-up happened within the expected window.",
+    impact: "Potential customer conversion was lost because the lead remained unattended.",
+    resolution: "Automatically assign the follow-up to the responsible sales representative and notify the team.",
   },
   {
-    id: 2,
     title: "Response Delay",
     severity: "Medium",
     value: "₹72K",
-    source: "WhatsApp + CRM",
-    description:
-      "Multiple customer messages remained unanswered beyond the expected response window.",
-    cause: "Possible response ownership gap",
-    action: "Route unanswered conversations to the available sales team.",
+    sources: "WhatsApp + CRM",
+    cause: "Customer enquiry remained unanswered for several hours.",
+    impact: "Delayed response increased the chance of the customer moving to another provider.",
+    resolution: "Trigger an immediate notification and create a follow-up task.",
   },
   {
-    id: 3,
     title: "Missed Call Opportunity",
     severity: "High",
     value: "₹1.21L",
-    source: "Genesys + CRM",
-    description:
-      "A high-value customer call was missed and no subsequent callback was detected.",
-    cause: "Possible callback process failure",
-    action: "Create a callback task and notify the assigned agent.",
+    sources: "Genesys + CRM",
+    cause: "Incoming customer call was not followed by a sales action.",
+    impact: "A high-value customer opportunity may have been lost.",
+    resolution: "Create an automatic callback task and alert the assigned sales team.",
   },
 ];
+
+function BrandLogo({ type }) {
+  if (type === "salesforce") {
+    return (
+      <div className="brand-logo salesforce-logo">
+        <span>☁</span>
+      </div>
+    );
+  }
+
+  if (type === "whatsapp") {
+    return (
+      <div className="brand-logo whatsapp-logo">
+        <span>◉</span>
+      </div>
+    );
+  }
+
+  if (type === "genesys") {
+    return (
+      <div className="brand-logo genesys-logo">
+        <span>G</span>
+      </div>
+    );
+  }
+
+  if (type === "avaya") {
+    return (
+      <div className="brand-logo avaya-logo">
+        <span>A</span>
+      </div>
+    );
+  }
+
+  if (type === "email") {
+    return (
+      <div className="brand-logo email-logo">
+        <span>✉</span>
+      </div>
+    );
+  }
+
+  if (type === "helpdesk") {
+    return (
+      <div className="brand-logo helpdesk-logo">
+        <span>?</span>
+      </div>
+    );
+  }
+
+  if (type === "crm") {
+    return (
+      <div className="brand-logo generic-logo">
+        <span>CRM</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="brand-logo generic-logo">
+      <span>SO</span>
+    </div>
+  );
+}
 
 function App() {
   const [page, setPage] = useState("home");
   const [connected, setConnected] = useState([]);
-  const [monitoring, setMonitoring] = useState(false);
+  const [selectedSystem, setSelectedSystem] = useState(null);
+  const [connectionStep, setConnectionStep] = useState("intro");
   const [selectedLeak, setSelectedLeak] = useState(null);
   const [resolved, setResolved] = useState(false);
 
-  const connectSystem = (id) => {
-    if (!connected.includes(id)) {
-      setConnected([...connected, id]);
-    }
+  const openConnection = (system) => {
+    setSelectedSystem(system);
+    setConnectionStep("intro");
   };
 
-  const startMonitoring = () => {
-    if (connected.length > 0) {
-      setMonitoring(true);
-      setPage("dashboard");
-    }
+  const closeConnection = () => {
+    setSelectedSystem(null);
+    setConnectionStep("intro");
   };
 
-  const openLeak = (leak) => {
-    setSelectedLeak(leak);
-    setResolved(false);
-    setPage("leak");
+  const completeConnection = () => {
+    if (!connected.includes(selectedSystem.name)) {
+      setConnected([...connected, selectedSystem.name]);
+    }
+
+    setConnectionStep("success");
   };
 
   if (page === "home") {
     return (
       <div className="app">
         <header className="topbar">
-          <div className="logo">
+          <div className="logo" onClick={() => setPage("home")}>
             <span className="logo-mark">L</span>
             <span>LeakLeans</span>
           </div>
 
-          <button className="nav-button" onClick={() => setPage("connect")}>
+          <button
+            className="nav-button"
+            onClick={() => setPage("connect")}
+          >
             Connect Systems
           </button>
         </header>
 
         <main className="hero">
-          <div className="hero-badge">REVENUE LEAKAGE INTELLIGENCE</div>
+          <div className="hero-badge">
+            REVENUE LEAKAGE INTELLIGENCE
+          </div>
 
           <h1>
             Find Where Your
@@ -155,8 +169,7 @@ function App() {
               className="primary-button"
               onClick={() => setPage("connect")}
             >
-              Connect Your Systems
-              <span>→</span>
+              Connect Your Systems →
             </button>
 
             <button
@@ -168,25 +181,55 @@ function App() {
           </div>
 
           <div className="hero-flow">
-            <div className="flow-card">
-              <strong>Your Systems</strong>
-              <small>CRM • Calls • Chats • Sales</small>
+            <div className="flow-box">
+              <small>YOUR SYSTEMS</small>
+              <strong>CRM · Calls · Chats · Sales</strong>
             </div>
 
             <div className="flow-arrow">→</div>
 
-            <div className="flow-card highlight">
-              <strong>LeakLeans</strong>
-              <small>Detect • Explain • Resolve</small>
+            <div className="flow-box active-flow">
+              <small>LEAKLEANS</small>
+              <strong>Detect Revenue Leakage</strong>
             </div>
 
             <div className="flow-arrow">→</div>
 
-            <div className="flow-card">
-              <strong>Business Impact</strong>
-              <small>Recover • Prevent • Measure</small>
+            <div className="flow-box">
+              <small>BUSINESS IMPACT</small>
+              <strong>Recover Lost Revenue</strong>
             </div>
           </div>
+
+          <footer className="landing-footer">
+            <div className="footer-brand">
+              <span className="logo-mark">L</span>
+              <strong>LeakLeans</strong>
+            </div>
+
+            <div className="footer-details">
+              <div>
+                <span>FOUNDER</span>
+                <strong>ANIKET MOHITE</strong>
+              </div>
+
+              <div>
+                <span>CONTACT US</span>
+                <a href="tel:8698382024">8698382024</a>
+              </div>
+
+              <div>
+                <span>EMAIL</span>
+                <a href="mailto:Aniket.Mohite@supportleaklens.com">
+                  Aniket.Mohite@supportleaklens.com
+                </a>
+              </div>
+            </div>
+
+            <div className="footer-bottom">
+              © 2026 LeakLeans. Revenue Leakage Intelligence.
+            </div>
+          </footer>
         </main>
       </div>
     );
@@ -201,52 +244,41 @@ function App() {
             <span>LeakLeans</span>
           </div>
 
-          <button className="nav-button" onClick={() => setPage("home")}>
+          <button
+            className="nav-button"
+            onClick={() => setPage("home")}
+          >
             ← Home
           </button>
         </header>
 
-        <main className="connect-page">
+        <main className="page-container">
           <div className="page-heading">
-            <div className="hero-badge">STEP 1</div>
+            <div className="hero-badge">
+              STEP 1 · CONNECT YOUR DATA
+            </div>
+
             <h2>Connect Your Existing Systems</h2>
+
             <p>
-              LeakLeans works as an intelligence layer on top of your existing
-              business systems. Select the systems you want to monitor.
+              LeakLeans works on top of the systems your business
+              already uses. Connect your systems so LeakLeans can
+              identify revenue leakage across workflows.
             </p>
           </div>
 
-          <div className="connection-status">
-            <div>
-              <span className="status-dot"></span>
-              {connected.length} system{connected.length !== 1 ? "s" : ""}{" "}
-              connected
-            </div>
-
-            {monitoring && <span className="monitoring-label">Monitoring</span>}
-          </div>
-
-          <div className="systems-grid">
+          <div className="system-grid">
             {systems.map((system) => {
-              const isConnected = connected.includes(system.id);
+              const isConnected = connected.includes(system.name);
 
               return (
-                <div
-                  className={`system-card ${
-                    isConnected ? "system-connected" : ""
-                  }`}
-                  key={system.id}
-                >
-                  <div className="system-top">
-                    <div className="system-icon">{system.icon}</div>
+                <div className="system-card" key={system.name}>
+                  <BrandLogo type={system.type} />
 
-                    <div>
-                      <h3>{system.name}</h3>
-                      <span>{system.category}</span>
-                    </div>
+                  <div className="system-info">
+                    <h3>{system.name}</h3>
+                    <p>{system.description}</p>
                   </div>
-
-                  <p>{system.description}</p>
 
                   <button
                     className={
@@ -254,40 +286,145 @@ function App() {
                         ? "connected-button"
                         : "connect-button"
                     }
-                    onClick={() => connectSystem(system.id)}
+                    onClick={() =>
+                      !isConnected && openConnection(system)
+                    }
                   >
-                    {isConnected ? "✓ Connected" : "Connect"}
+                    {isConnected ? "Connected ✓" : "Connect"}
                   </button>
                 </div>
               );
             })}
           </div>
 
-          <div className="monitor-card">
-            <div>
-              <span className="monitor-label">NEXT STEP</span>
-              <h3>Start Revenue Leakage Monitoring</h3>
-              <p>
-                Once your systems are connected, LeakLeans can begin analyzing
-                cross-system signals.
-              </p>
-            </div>
+          <div className="bottom-actions">
+            <button
+              className="secondary-button"
+              onClick={() => setPage("home")}
+            >
+              Back
+            </button>
 
             <button
               className="primary-button"
-              disabled={connected.length === 0}
-              onClick={startMonitoring}
+              onClick={() => setPage("dashboard")}
             >
-              Start Monitoring →
+              Continue to Leak Detection →
             </button>
           </div>
-
-          <div className="demo-note">
-            <strong>MVP demo:</strong> Connections are currently simulated.
-            Real Salesforce, Genesys, Avaya and other API/OAuth integrations
-            will be added during the integration phase.
-          </div>
         </main>
+
+        {selectedSystem && (
+          <div className="modal-overlay">
+            <div className="connection-modal">
+              {connectionStep === "intro" && (
+                <>
+                  <BrandLogo type={selectedSystem.type} />
+
+                  <h2>Connect {selectedSystem.name}</h2>
+
+                  <p>
+                    LeakLeans needs permission to access relevant
+                    business activity from {selectedSystem.name}.
+                  </p>
+
+                  <div className="permission-box">
+                    <div>✓ Read customer activity</div>
+                    <div>✓ Read interaction history</div>
+                    <div>✓ Analyze workflow signals</div>
+                  </div>
+
+                  <button
+                    className="primary-button full-button"
+                    onClick={() => setConnectionStep("authorization")}
+                  >
+                    Continue to Authorization →
+                  </button>
+
+                  <button
+                    className="text-button"
+                    onClick={closeConnection}
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
+
+              {connectionStep === "authorization" && (
+                <>
+                  <div className="modal-step">AUTHORIZATION</div>
+
+                  <h2>Authorize LeakLeans</h2>
+
+                  <p>
+                    Review the permissions LeakLeans will use to
+                    analyze your business workflows.
+                  </p>
+
+                  <div className="authorization-list">
+                    <div>
+                      <span>Customer activity</span>
+                      <strong>Read</strong>
+                    </div>
+
+                    <div>
+                      <span>Interaction history</span>
+                      <strong>Read</strong>
+                    </div>
+
+                    <div>
+                      <span>Workflow signals</span>
+                      <strong>Analyze</strong>
+                    </div>
+                  </div>
+
+                  <button
+                    className="primary-button full-button"
+                    onClick={completeConnection}
+                  >
+                    Connect & Continue
+                  </button>
+
+                  <button
+                    className="text-button"
+                    onClick={() => setConnectionStep("intro")}
+                  >
+                    ← Back
+                  </button>
+                </>
+              )}
+
+              {connectionStep === "success" && (
+                <>
+                  <div className="success-icon">✓</div>
+
+                  <h2>{selectedSystem.name} Connected</h2>
+
+                  <p>
+                    Connection established successfully.
+                  </p>
+
+                  <div className="success-message">
+                    LeakLeans can now use this source as part of
+                    revenue leakage analysis.
+                  </div>
+
+                  <button
+                    className="primary-button full-button"
+                    onClick={closeConnection}
+                  >
+                    Done
+                  </button>
+
+                  <small className="demo-note">
+                    Demo environment: actual OAuth/API integration
+                    will be added in the production integration phase.
+                  </small>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -305,124 +442,127 @@ function App() {
             className="nav-button"
             onClick={() => setPage("connect")}
           >
-            Manage Connections
+            Systems
           </button>
         </header>
 
-        <main className="dashboard">
+        <main className="page-container">
           <div className="dashboard-heading">
             <div>
-              <div className="hero-badge">REVENUE INTELLIGENCE</div>
-              <h2>Leak Detection Center</h2>
-              <p>
-                LeakLeans is analyzing signals across your connected systems.
-              </p>
-            </div>
-
-            <div className="live-status">
-              <span className="status-dot"></span>
-              Live Monitoring
-            </div>
-          </div>
-
-          <div className="metrics-grid">
-            <div className="metric-card">
-              <span>ACTIVE LEAKS</span>
-              <strong>3</strong>
-              <small>Potential issues detected</small>
-            </div>
-
-            <div className="metric-card">
-              <span>REVENUE AT RISK</span>
-              <strong>₹3.77L</strong>
-              <small>Estimated opportunity value</small>
-            </div>
-
-            <div className="metric-card">
-              <span>SIGNALS ANALYZED</span>
-              <strong>18,492</strong>
-              <small>Across connected systems</small>
-            </div>
-
-            <div className="metric-card">
-              <span>CONNECTED SYSTEMS</span>
-              <strong>{connected.length || 4}</strong>
-              <small>Data sources monitored</small>
-            </div>
-          </div>
-
-          <section className="section">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">DETECTED</span>
-                <h3>Potential Revenue Leaks</h3>
+              <div className="hero-badge">
+                REVENUE LEAKAGE INTELLIGENCE
               </div>
 
-              <span className="count-badge">{leaks.length} detected</span>
-            </div>
+              <h2>Leak Detection Overview</h2>
 
-            <div className="leaks-list">
-              {leaks.map((leak) => (
-                <div className="leak-card" key={leak.id}>
-                  <div className="leak-main">
-                    <div className="severity">
-                      <span className={`severity-dot ${leak.severity.toLowerCase()}`}></span>
-                      {leak.severity}
-                    </div>
-
-                    <h3>{leak.title}</h3>
-                    <p>{leak.description}</p>
-
-                    <div className="source-tag">
-                      Data: {leak.source}
-                    </div>
-                  </div>
-
-                  <div className="leak-side">
-                    <strong>{leak.value}</strong>
-                    <span>Potential impact</span>
-
-                    <button
-                      className="view-button"
-                      onClick={() => openLeak(leak)}
-                    >
-                      Investigate →
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="signal-panel">
-            <div>
-              <span className="section-label">CROSS-SYSTEM ANALYSIS</span>
-              <h3>LeakLeans is connecting the dots.</h3>
               <p>
-                Instead of looking at one system alone, LeakLeans compares
-                customer activity across CRM, calls, messages, sales and
-                support workflows.
+                Signals detected across your connected business systems.
               </p>
             </div>
 
-            <div className="signal-chain">
-              <span>Lead</span>
-              <b>→</b>
-              <span>Call</span>
-              <b>→</b>
-              <span>Quote</span>
-              <b>→</b>
-              <span className="missing">No Follow-up</span>
-              <b>→</b>
-              <span className="leak-result">Potential Leak</span>
+            <button
+              className="primary-button"
+              onClick={() => setPage("connect")}
+            >
+              + Connect System
+            </button>
+          </div>
+
+          <div className="metric-grid">
+            <div className="metric-card">
+              <span>Potential Leakage</span>
+              <strong>₹3.77L</strong>
+              <small>Detected this period</small>
             </div>
-          </section>
+
+            <div className="metric-card">
+              <span>Active Leaks</span>
+              <strong>3</strong>
+              <small>Require investigation</small>
+            </div>
+
+            <div className="metric-card">
+              <span>Connected Sources</span>
+              <strong>{connected.length || 4}</strong>
+              <small>Business systems</small>
+            </div>
+
+            <div className="metric-card">
+              <span>Signals Analyzed</span>
+              <strong>12,482</strong>
+              <small>Across workflows</small>
+            </div>
+          </div>
+
+          <div className="section-header">
+            <div>
+              <h3>Potential Revenue Leaks</h3>
+              <p>
+                Issues identified from activity patterns across systems.
+              </p>
+            </div>
+          </div>
+
+          <div className="leak-list">
+            {leaks.map((leak, index) => (
+              <div className="leak-card" key={leak.title}>
+                <div className="leak-number">
+                  0{index + 1}
+                </div>
+
+                <div className="leak-main">
+                  <div className="leak-title-row">
+                    <h3>{leak.title}</h3>
+
+                    <span
+                      className={`severity ${leak.severity.toLowerCase()}`}
+                    >
+                      {leak.severity}
+                    </span>
+                  </div>
+
+                  <p>{leak.sources}</p>
+                </div>
+
+                <div className="leak-value">
+                  <strong>{leak.value}</strong>
+                  <small>potential impact</small>
+                </div>
+
+                <button
+                  className="investigate-button"
+                  onClick={() => {
+                    setSelectedLeak(leak);
+                    setResolved(false);
+                    setPage("investigate");
+                  }}
+                >
+                  Investigate →
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className="monitoring-card">
+            <div>
+              <div className="status-dot"></div>
+              <div>
+                <strong>LeakLeans monitoring is active</strong>
+                <p>
+                  Continuously analyzing signals across connected
+                  workflows.
+                </p>
+              </div>
+            </div>
+
+            <span className="live-label">LIVE</span>
+          </div>
         </main>
       </div>
     );
   }
 
-  if (page === "leak" && selectedLeak) {
+  if (page === "investigate" && selectedLeak) {
     return (
       <div className="app">
         <header className="topbar">
@@ -439,120 +579,110 @@ function App() {
           </button>
         </header>
 
-        <main className="investigation">
-          <button
-            className="back-link"
-            onClick={() => setPage("dashboard")}
-          >
-            ← Back to detected leaks
-          </button>
-
-          <div className="investigation-header">
+        <main className="page-container investigation-page">
+          <div className="investigation-top">
             <div>
-              <div className="severity large">
-                <span
-                  className={`severity-dot ${selectedLeak.severity.toLowerCase()}`}
-                ></span>
-                {selectedLeak.severity} Priority
+              <div className="hero-badge">
+                INVESTIGATION
               </div>
 
               <h2>{selectedLeak.title}</h2>
 
-              <p>{selectedLeak.description}</p>
+              <p>
+                LeakLeans identified a possible revenue leakage
+                pattern across connected systems.
+              </p>
             </div>
 
-            <div className="impact-box">
-              <span>Potential Revenue Impact</span>
-              <strong>{selectedLeak.value}</strong>
-            </div>
+            <span
+              className={`severity large ${selectedLeak.severity.toLowerCase()}`}
+            >
+              {selectedLeak.severity} Priority
+            </span>
           </div>
 
-          <div className="evidence-section">
-            <span className="section-label">EVIDENCE CHAIN</span>
-            <h3>What LeakLeans found</h3>
-
-            <div className="evidence-chain">
-              <div className="evidence-item">
-                <span>01</span>
-                <div>
-                  <strong>Customer enquiry detected</strong>
-                  <small>CRM activity</small>
-                </div>
-              </div>
-
-              <div className="chain-line"></div>
-
-              <div className="evidence-item">
-                <span>02</span>
-                <div>
-                  <strong>Customer interaction detected</strong>
-                  <small>{selectedLeak.source}</small>
-                </div>
-              </div>
-
-              <div className="chain-line"></div>
-
-              <div className="evidence-item warning">
-                <span>03</span>
-                <div>
-                  <strong>Expected next action missing</strong>
-                  <small>Workflow signal</small>
-                </div>
-              </div>
-            </div>
+          <div className="investigation-value">
+            <span>Potential Business Impact</span>
+            <strong>{selectedLeak.value}</strong>
           </div>
 
-          <div className="analysis-grid">
-            <div className="analysis-card">
+          <div className="investigation-grid">
+            <div className="investigation-card">
               <span>PROBABLE CAUSE</span>
-              <h3>{selectedLeak.cause}</h3>
-              <p>
-                LeakLeans detected a pattern where the expected business
-                process did not continue after the customer interaction.
-              </p>
+              <h3>Why did this happen?</h3>
+              <p>{selectedLeak.cause}</p>
             </div>
 
-            <div className="analysis-card">
+            <div className="investigation-card">
+              <span>BUSINESS IMPACT</span>
+              <h3>What could be lost?</h3>
+              <p>{selectedLeak.impact}</p>
+            </div>
+
+            <div className="investigation-card">
               <span>RECOMMENDED RESOLUTION</span>
-              <h3>{selectedLeak.action}</h3>
-              <p>
-                The recommended action can later be executed through an
-                integration, workflow or AI agent.
-              </p>
+              <h3>What should happen next?</h3>
+              <p>{selectedLeak.resolution}</p>
             </div>
           </div>
 
-          <div className="resolve-panel">
-            {resolved ? (
-              <>
-                <div className="resolved-icon">✓</div>
-                <div>
-                  <strong>Leak marked as resolved</strong>
-                  <p>
-                    LeakLeans will continue monitoring this workflow for
-                    similar patterns.
-                  </p>
-                </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <span className="section-label">ACTION</span>
-                  <h3>Resolve this revenue leak</h3>
-                  <p>
-                    This is a demo action. In production, LeakLeans can
-                    trigger approved workflows or notify the responsible team.
-                  </p>
-                </div>
+          <div className="action-card">
+            <div>
+              <span>ACTION</span>
+              <h3>Resolve this revenue leak</h3>
+              <p>
+                Create the required workflow action and notify the
+                responsible team.
+              </p>
+            </div>
 
-                <button
-                  className="primary-button"
-                  onClick={() => setResolved(true)}
-                >
-                  Resolve Leak →
-                </button>
-              </>
+            {resolved ? (
+              <div className="resolved-status">
+                ✓ Leak Resolution Initiated
+              </div>
+            ) : (
+              <button
+                className="primary-button"
+                onClick={() => setResolved(true)}
+              >
+                Resolve Leak →
+              </button>
             )}
+          </div>
+
+          <div className="process-flow">
+            <div className="process-step active">
+              <strong>1</strong>
+              <span>Detect</span>
+            </div>
+
+            <div className="process-line"></div>
+
+            <div className="process-step active">
+              <strong>2</strong>
+              <span>Investigate</span>
+            </div>
+
+            <div className="process-line"></div>
+
+            <div className="process-step active">
+              <strong>3</strong>
+              <span>Explain</span>
+            </div>
+
+            <div className="process-line"></div>
+
+            <div className="process-step">
+              <strong>4</strong>
+              <span>Resolve</span>
+            </div>
+
+            <div className="process-line"></div>
+
+            <div className="process-step">
+              <strong>5</strong>
+              <span>Prevent</span>
+            </div>
           </div>
         </main>
       </div>

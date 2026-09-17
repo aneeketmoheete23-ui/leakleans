@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b0f14;
+  color: white;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.tagline {
+  color: #9ca3af;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 30px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}

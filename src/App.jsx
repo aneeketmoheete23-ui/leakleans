@@ -351,9 +351,7 @@ function LandingPage({ onStart }) {
       </header>
 
       <main className="hero">
-        <div className="hero-badge">
-          AI-POWERED REVENUE INTELLIGENCE
-        </div>
+        <div className="hero-badge">AI-POWERED REVENUE INTELLIGENCE</div>
 
         <h1>
           Find Where Your
@@ -371,6 +369,7 @@ function LandingPage({ onStart }) {
           <button className="primary-button" onClick={onStart}>
             Start Detecting Revenue Leaks →
           </button>
+
           <button
             className="secondary-button"
             onClick={() =>
@@ -385,11 +384,13 @@ function LandingPage({ onStart }) {
 
         <div className="founder-card">
           <div className="founder-avatar">AM</div>
+
           <div>
             <small>FOUNDER</small>
             <h3>{FOUNDER}</h3>
             <p>Founder, {BRAND}</p>
           </div>
+
           <div className="founder-contact">
             <span>📞 {PHONE}</span>
             <span>✉ {EMAIL}</span>
@@ -414,6 +415,7 @@ function LandingPage({ onStart }) {
         <div className="section-heading center">
           <span>THE INTELLIGENCE LAYER</span>
           <h2>From hidden signal to recovered revenue.</h2>
+
           <p>
             AI Revenue Leak Detector sits above your existing business
             systems. It finds problems that are difficult to see inside one
@@ -442,14 +444,17 @@ function LandingPage({ onStart }) {
           <strong>8+</strong>
           <span>System integrations</span>
         </div>
+
         <div>
           <strong>₹5.51L</strong>
           <span>Demo leakage identified</span>
         </div>
+
         <div>
           <strong>24/7</strong>
           <span>Continuous monitoring</span>
         </div>
+
         <div>
           <strong>AI</strong>
           <span>Cause analysis</span>
@@ -459,6 +464,7 @@ function LandingPage({ onStart }) {
       <footer className="landing-footer">
         <div>
           <BrandMark />
+
           <div>
             <strong>{BRAND}</strong>
             <p>{TAGLINE}</p>
@@ -483,6 +489,7 @@ function Sidebar({ page, setPage, collapsed, setCollapsed, role }) {
     <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div className="sidebar-brand">
         <BrandMark />
+
         {!collapsed && (
           <div>
             <strong>AI Revenue</strong>
@@ -498,6 +505,7 @@ function Sidebar({ page, setPage, collapsed, setCollapsed, role }) {
             <strong>{role}</strong>
           </>
         )}
+
         <span>●</span>
       </div>
 
@@ -528,6 +536,7 @@ function Sidebar({ page, setPage, collapsed, setCollapsed, role }) {
                     {id === "notifications" && "◉"}
                     {id === "settings" && "⚙"}
                   </span>
+
                   {!collapsed && <span>{label}</span>}
                 </button>
               );
@@ -569,6 +578,15 @@ function Topbar({ role, setRole, setPage }) {
           Monitoring Active
         </div>
 
+        <button
+          className="notification-bell"
+          onClick={() => setPage("notifications")}
+          title="Notifications"
+        >
+          🔔
+          <span>3</span>
+        </button>
+
         <select value={role} onChange={(e) => setRole(e.target.value)}>
           <option>Admin</option>
           <option>Manager</option>
@@ -578,6 +596,7 @@ function Topbar({ role, setRole, setPage }) {
 
         <button className="profile" onClick={() => setPage("settings")}>
           <span>AM</span>
+
           <div>
             <b>{FOUNDER}</b>
             <small>{role}</small>
@@ -589,14 +608,13 @@ function Topbar({ role, setRole, setPage }) {
 }
 
 function OverviewPage({ setPage, setSelectedLeak }) {
-  const total = 551000;
-
   return (
     <div className="page">
       <div className="welcome">
         <div>
           <span className="eyebrow">OVERVIEW</span>
           <h1>Revenue leakage intelligence</h1>
+
           <p>
             Your systems are connected. The AI layer is monitoring business
             activity for potential leakage.
@@ -614,16 +632,19 @@ function OverviewPage({ setPage, setSelectedLeak }) {
           <strong>₹5.51L</strong>
           <small>Across detected signals</small>
         </div>
+
         <div className="stat-card">
           <span>Open Signals</span>
           <strong>5</strong>
           <small>Require investigation</small>
         </div>
+
         <div className="stat-card">
           <span>High Priority</span>
           <strong>2</strong>
           <small>Immediate attention</small>
         </div>
+
         <div className="stat-card">
           <span>Systems Connected</span>
           <strong>7</strong>
@@ -638,6 +659,7 @@ function OverviewPage({ setPage, setSelectedLeak }) {
               <span className="eyebrow">DETECTED SIGNALS</span>
               <h2>Revenue leakage signals</h2>
             </div>
+
             <button onClick={() => setPage("leaks")}>View all</button>
           </div>
 
@@ -662,9 +684,7 @@ function OverviewPage({ setPage, setSelectedLeak }) {
                   </span>
                 </div>
 
-                <StatusBadge
-                  type={leak.severity.toLowerCase()}
-                >
+                <StatusBadge type={leak.severity.toLowerCase()}>
                   {leak.severity}
                 </StatusBadge>
 
@@ -698,11 +718,13 @@ function OverviewPage({ setPage, setSelectedLeak }) {
         <div>
           <span className="eyebrow">AI INVESTIGATION</span>
           <h2>Detect → Investigate → Explain → Resolve → Prevent</h2>
+
           <p>
-            The platform looks for gaps between customer activity, sales
+            The AI layer looks for gaps between customer activity, sales
             activity, communication and support workflows.
           </p>
         </div>
+
         <button onClick={() => setPage("investigation")}>
           Investigate Signals →
         </button>
@@ -718,7 +740,10 @@ function LeaksPage({ setSelectedLeak, setPage }) {
         <div>
           <span className="eyebrow">REVENUE LEAKS</span>
           <h1>Detected leakage signals</h1>
-          <p>Review potential revenue leakage discovered across your systems.</p>
+
+          <p>
+            Review potential revenue leakage discovered across your systems.
+          </p>
         </div>
       </div>
 
@@ -752,12 +777,17 @@ function LeaksPage({ setSelectedLeak, setPage }) {
               <b>{leak.title}</b>
               <small>{leak.description}</small>
             </div>
+
             <span>{leak.system}</span>
+
             <StatusBadge type={leak.severity.toLowerCase()}>
               {leak.severity}
             </StatusBadge>
+
             <strong>{leak.value}</strong>
+
             <StatusBadge>{leak.status}</StatusBadge>
+
             <span>→</span>
           </button>
         ))}
@@ -766,8 +796,102 @@ function LeaksPage({ setSelectedLeak, setPage }) {
   );
 }
 
-function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
+function InvestigationPage({
+  selectedLeak,
+  resolved,
+  setResolved,
+  setPage,
+}) {
   const leak = selectedLeak || leaks[0];
+
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState("");
+  const [aiError, setAiError] = useState("");
+
+  async function runAIInvestigation() {
+    setAiLoading(true);
+    setAiError("");
+    setAiResult("");
+
+    const prompt = `
+You are the AI investigation engine inside a Revenue Leakage Intelligence System.
+
+Analyze this revenue leakage signal.
+
+IMPORTANT:
+- Do not invent facts.
+- Clearly distinguish provided facts from probable causes.
+- If a responsible person is not provided, say "Responsible person not identified from available data."
+- Do not falsely claim that you accessed Salesforce, Genesys, WhatsApp, Gmail or another system.
+- Explain what additional system data would be required to identify the responsible person with confidence.
+- Be practical and business-focused.
+
+LEAK DATA:
+
+Signal:
+${leak.title}
+
+System:
+${leak.system}
+
+Severity:
+${leak.severity}
+
+Potential Revenue at Risk:
+${leak.value}
+
+Detected Description:
+${leak.description}
+
+Existing Probable Cause:
+${leak.cause}
+
+Existing Recommended Action:
+${leak.action}
+
+Return the investigation using exactly these headings:
+
+WHAT WAS MISSED
+WHO MISSED IT
+WHY WAS IT MISSED
+REVENUE AT RISK
+WHAT NEEDS TO BE DONE
+AGENT NAVIGATION
+RECOMMENDED ACTION
+CONFIDENCE / DATA LIMITATION
+
+For AGENT NAVIGATION, describe the systems/data the agent should inspect next, for example:
+CRM lead → owner → call history → email/WhatsApp activity → follow-up task → quotation → order status.
+
+Do not claim those systems were actually checked unless the supplied data says they were checked.
+`;
+
+    try {
+      const response = await fetch("/api/gemini", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Gemini request failed");
+      }
+
+      setAiResult(data.result || "No AI result returned.");
+    } catch (error) {
+      console.error(error);
+
+      setAiError(
+        "Gemini could not complete the investigation. Check the Vercel API deployment and GEMINI_API_KEY."
+      );
+    } finally {
+      setAiLoading(false);
+    }
+  }
 
   return (
     <div className="page">
@@ -775,7 +899,9 @@ function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
         <div>
           <span className="eyebrow">AI INVESTIGATION</span>
           <h1>{leak.title}</h1>
-          <p>{leak.system} · Signal #{leak.id}</p>
+          <p>
+            {leak.system} · Signal #{leak.id}
+          </p>
         </div>
 
         <StatusBadge type={leak.severity.toLowerCase()}>
@@ -800,8 +926,9 @@ function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
           <div className="investigation-section">
             <span className="eyebrow">PROBABLE CAUSE</span>
             <h3>{leak.cause}</h3>
+
             <p>
-              The platform has identified a workflow pattern that may require
+              The platform has identified a workflow pattern that requires
               operational review.
             </p>
           </div>
@@ -809,10 +936,62 @@ function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
           <div className="investigation-section">
             <span className="eyebrow">RECOMMENDED RESOLUTION</span>
             <h3>{leak.action}</h3>
+
             <p>
               A permitted automation or responsible team member can execute
               this action after approval.
             </p>
+          </div>
+
+          <div className="ai-investigation-box">
+            <div className="ai-investigation-header">
+              <div>
+                <span className="eyebrow">GEMINI AI</span>
+                <h2>Run Real AI Investigation</h2>
+              </div>
+
+              <span className="ai-live-badge">
+                {aiLoading ? "Analyzing..." : "AI Ready"}
+              </span>
+            </div>
+
+            <p>
+              Gemini will analyze the supplied leakage signal and explain what
+              was missed, who can be identified from the available evidence,
+              why it may have happened, what should be done and what the agent
+              should inspect next.
+            </p>
+
+            <button
+              className="primary-button"
+              onClick={runAIInvestigation}
+              disabled={aiLoading}
+            >
+              {aiLoading
+                ? "Gemini is investigating..."
+                : "Run Gemini Investigation →"}
+            </button>
+
+            {aiError && (
+              <div className="ai-error">
+                <b>AI connection problem</b>
+                <p>{aiError}</p>
+              </div>
+            )}
+
+            {aiResult && (
+              <div className="ai-result">
+                <div className="ai-result-title">
+                  <span>✦</span>
+                  <div>
+                    <b>Gemini Investigation Result</b>
+                    <small>AI analysis of the current signal</small>
+                  </div>
+                </div>
+
+                <pre>{aiResult}</pre>
+              </div>
+            )}
           </div>
 
           {!resolved ? (
@@ -830,18 +1009,20 @@ function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
         </section>
 
         <aside className="panel timeline-panel">
-          <span className="eyebrow">SIGNAL TIMELINE</span>
+          <span className="eyebrow">AGENT NAVIGATION</span>
           <h2>Investigation path</h2>
 
           {[
             ["Detected", "Revenue anomaly identified", "✓"],
-            ["Investigating", "Cross-system activity checked", "✓"],
-            ["Explained", "Probable cause generated", "✓"],
+            ["Navigate", "Identify systems and records to inspect", "→"],
+            ["Investigate", "Cross-system activity checked", "→"],
+            ["Explain", "Gemini analyzes the available evidence", "→"],
             ["Resolution", "Recommended action available", "→"],
             ["Prevention", "Monitor after resolution", "○"],
-          ].map(([title, text, icon]) => (
+          ].map(([title, text, iconValue]) => (
             <div className="timeline-item" key={title}>
-              <span>{icon}</span>
+              <span>{iconValue}</span>
+
               <div>
                 <b>{title}</b>
                 <p>{text}</p>
@@ -849,7 +1030,19 @@ function InvestigationPage({ selectedLeak, resolved, setResolved, setPage }) {
             </div>
           ))}
 
-          <button className="secondary-button" onClick={() => setPage("leaks")}>
+          <div className="agent-flow-box">
+            <span>AGENT FLOW</span>
+
+            <p>
+              CRM → Owner → Calls → Messages → Email → Follow-up → Quote →
+              Order → Gemini
+            </p>
+          </div>
+
+          <button
+            className="secondary-button"
+            onClick={() => setPage("leaks")}
+          >
             Back to Revenue Leaks
           </button>
         </aside>
@@ -867,6 +1060,7 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
         <div>
           <span className="eyebrow">INTEGRATIONS</span>
           <h1>Connect your existing systems</h1>
+
           <p>
             AI Revenue Leak Detector works as an intelligence layer above your
             existing business platforms.
@@ -876,8 +1070,10 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
 
       <div className="integration-notice">
         <span>◈</span>
+
         <div>
           <b>Your systems remain your systems.</b>
+
           <p>
             This platform does not replace Salesforce, Genesys, Avaya, CRM,
             helpdesk or communication platforms. It analyzes signals across
@@ -891,13 +1087,16 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
           <div className="integration-card" key={system.id}>
             <div className="integration-top">
               <Logo system={system} large />
+
               {connected.includes(system.id) && (
                 <StatusBadge type="connected">Connected</StatusBadge>
               )}
             </div>
 
             <span className="integration-category">{system.category}</span>
+
             <h3>{system.name}</h3>
+
             <p>{system.description}</p>
 
             <button
@@ -919,21 +1118,28 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
       {selected && (
         <Modal onClose={() => setSelected(null)}>
           <Logo system={selected} large />
+
           <span className="eyebrow">CONNECT SYSTEM</span>
+
           <h2>{selected.name}</h2>
+
           <p>{selected.description}</p>
 
           <div className="auth-box">
             <b>Connection method</b>
+
             <div className="auth-option active">
               <span>●</span>
+
               <div>
                 <strong>Automatic API / OAuth</strong>
                 <small>Recommended connection method</small>
               </div>
             </div>
+
             <div className="auth-option">
               <span>○</span>
+
               <div>
                 <strong>Manual API credentials</strong>
                 <small>For custom enterprise environments</small>
@@ -946,6 +1152,7 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
               Account / Instance
               <input placeholder="Enter account or instance" />
             </label>
+
             <label>
               Client ID / API Key
               <input placeholder="Enter credentials" />
@@ -953,8 +1160,8 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
           </div>
 
           <div className="modal-warning">
-            Demo UI only. Production OAuth tokens and secrets should be
-            processed securely through the backend.
+            Production OAuth tokens and API secrets must be processed securely
+            through the backend.
           </div>
 
           <button
@@ -965,6 +1172,7 @@ function IntegrationsPage({ connected, setConnected, setPage }) {
                   ? prev
                   : [...prev, selected.id]
               );
+
               setSelected(null);
               setPage("integrations");
             }}
@@ -984,7 +1192,10 @@ function AnalyticsPage() {
         <div>
           <span className="eyebrow">ANALYTICS</span>
           <h1>Revenue leakage analytics</h1>
-          <p>Understand where leakage is appearing across your workflows.</p>
+
+          <p>
+            Understand where leakage is appearing across your workflows.
+          </p>
         </div>
       </div>
 
@@ -992,6 +1203,7 @@ function AnalyticsPage() {
         <div className="panel chart-card">
           <span className="eyebrow">POTENTIAL LEAKAGE</span>
           <h2>₹5,51,000</h2>
+
           <div className="fake-chart">
             {[35, 52, 42, 68, 55, 82, 70, 94, 75, 88].map(
               (height, index) => (
@@ -1022,15 +1234,18 @@ function AnalyticsPage() {
       <div className="panel">
         <span className="eyebrow">INTELLIGENCE</span>
         <h2>Cross-system patterns</h2>
+
         <div className="pattern-grid">
           <div>
             <b>Sales → Communication</b>
             <p>Follow-up gaps detected after customer interactions.</p>
           </div>
+
           <div>
             <b>Calls → CRM</b>
             <p>Call activity can be compared with lead progression.</p>
           </div>
+
           <div>
             <b>Support → Revenue</b>
             <p>Repeated complaints can be linked to customer value.</p>
@@ -1055,7 +1270,10 @@ function ActionsPage() {
         <div>
           <span className="eyebrow">ACTIONS</span>
           <h1>Revenue recovery actions</h1>
-          <p>Recommended actions generated from detected leakage signals.</p>
+
+          <p>
+            Recommended actions generated from detected leakage signals.
+          </p>
         </div>
       </div>
 
@@ -1066,7 +1284,9 @@ function ActionsPage() {
               <b>{action}</b>
               <span>{system}</span>
             </div>
+
             <StatusBadge>{status}</StatusBadge>
+
             <button>Review →</button>
           </div>
         ))}
@@ -1089,29 +1309,35 @@ function TeamPage() {
         <div>
           <span className="eyebrow">TEAM</span>
           <h1>Team & access</h1>
-          <p>Different access levels for different responsibilities.</p>
+
+          <p>
+            Different access levels for different responsibilities.
+          </p>
         </div>
+
         <button className="primary-button">+ Add Member</button>
       </div>
 
       <div className="role-grid">
-        {Object.entries(rolePermissions).map(([role, permissions]) => (
-          <div className="role-card" key={role}>
+        {Object.entries(rolePermissions).map(([roleName, permissions]) => (
+          <div className="role-card" key={roleName}>
             <span>ACCESS</span>
-            <h3>{role}</h3>
+            <h3>{roleName}</h3>
             <p>{permissions.length} platform permissions</p>
           </div>
         ))}
       </div>
 
       <div className="panel team-list">
-        {members.map(([initials, name, role]) => (
+        {members.map(([initials, name, roleName]) => (
           <div className="member-row" key={name}>
             <div className="member-avatar">{initials}</div>
+
             <div>
               <b>{name}</b>
-              <span>{role}</span>
+              <span>{roleName}</span>
             </div>
+
             <StatusBadge type="connected">Active</StatusBadge>
           </div>
         ))}
@@ -1136,14 +1362,19 @@ function BillingPage() {
         <div>
           <span className="eyebrow">BILLING & PAYMENTS</span>
           <h1>Plans & payment methods</h1>
-          <p>Choose a plan and configure your preferred payment method.</p>
+
+          <p>
+            Choose a plan and configure your preferred payment method.
+          </p>
         </div>
       </div>
 
       <div className="plans-grid">
         {plans.map(([id, name, price, description]) => (
           <button
-            className={`plan-card ${selectedPlan === id ? "selected" : ""}`}
+            className={`plan-card ${
+              selectedPlan === id ? "selected" : ""
+            }`}
             key={id}
             onClick={() => setSelectedPlan(id)}
           >
@@ -1151,6 +1382,7 @@ function BillingPage() {
             <strong>{price}</strong>
             <small>/ month</small>
             <p>{description}</p>
+
             {selectedPlan === id && <b>Selected ✓</b>}
           </button>
         ))}
@@ -1170,20 +1402,20 @@ function BillingPage() {
               onClick={() => setPayment(method.id)}
             >
               <PaymentLogo payment={method} />
+
               <div>
                 <b>{method.name}</b>
                 <span>{method.description}</span>
               </div>
+
               <i>{payment === method.id ? "✓" : "○"}</i>
             </button>
           ))}
         </div>
 
         <div className="payment-note">
-          Razorpay, Stripe, PayPal, Google Pay, super.money, PhonePe, debit
-          card and credit card can be presented in the payment layer. Actual
-          payment processing requires the respective production backend
-          integration.
+          Actual payment processing requires production integration with the
+          selected payment provider.
         </div>
       </div>
     </div>
@@ -1197,22 +1429,38 @@ function NotificationsPage() {
         <div>
           <span className="eyebrow">NOTIFICATIONS</span>
           <h1>Notifications</h1>
-          <p>Configure how your team receives revenue leakage alerts.</p>
+
+          <p>
+            Configure how your team receives revenue leakage alerts.
+          </p>
         </div>
       </div>
 
       <div className="panel settings-list">
         {[
-          ["High priority leakage", "Immediate alert when a high-value signal appears."],
-          ["Daily revenue summary", "Receive a daily overview of detected signals."],
-          ["Integration health", "Get notified when a connected system stops responding."],
-          ["Resolution updates", "Notify relevant team members when actions are completed."],
+          [
+            "High priority leakage",
+            "Immediate alert when a high-value signal appears.",
+          ],
+          [
+            "Daily revenue summary",
+            "Receive a daily overview of detected signals.",
+          ],
+          [
+            "Integration health",
+            "Get notified when a connected system stops responding.",
+          ],
+          [
+            "Resolution updates",
+            "Notify relevant team members when actions are completed.",
+          ],
         ].map(([title, text]) => (
           <div className="setting-row" key={title}>
             <div>
               <b>{title}</b>
               <p>{text}</p>
             </div>
+
             <div className="toggle on">
               <i />
             </div>
@@ -1230,6 +1478,7 @@ function SettingsPage({ role }) {
         <div>
           <span className="eyebrow">ACCOUNT</span>
           <h1>Settings</h1>
+
           <p>Workspace and founder information.</p>
         </div>
       </div>
@@ -1237,15 +1486,20 @@ function SettingsPage({ role }) {
       <div className="settings-grid">
         <div className="panel profile-panel">
           <div className="big-avatar">AM</div>
+
           <span className="eyebrow">FOUNDER</span>
+
           <h2>{FOUNDER}</h2>
+
           <p>Founder, {BRAND}</p>
 
           <div className="contact-box">
             <span>Phone</span>
             <b>{PHONE}</b>
+
             <span>Email</span>
             <b>{EMAIL}</b>
+
             <span>Access</span>
             <b>{role}</b>
           </div>
@@ -1253,6 +1507,7 @@ function SettingsPage({ role }) {
 
         <div className="panel">
           <span className="eyebrow">WORKSPACE</span>
+
           <h2>{BRAND}</h2>
 
           <label className="field">
@@ -1280,11 +1535,13 @@ function App() {
   const [page, setPage] = useState("overview");
   const [role, setRole] = useState("Admin");
   const [collapsed, setCollapsed] = useState(false);
+
   const [connected, setConnected] = useState([
     "salesforce",
     "genesys",
     "whatsapp",
   ]);
+
   const [selectedLeak, setSelectedLeak] = useState(leaks[0]);
   const [resolved, setResolved] = useState(false);
 
@@ -1303,7 +1560,11 @@ function App() {
       />
 
       <div className="main-area">
-        <Topbar role={role} setRole={setRole} setPage={setPage} />
+        <Topbar
+          role={role}
+          setRole={setRole}
+          setPage={setPage}
+        />
 
         <main className="content">
           {page === "overview" && (

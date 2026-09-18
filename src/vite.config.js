@@ -1,10 +1,20 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import vercel from "vite-plugin-vercel";
-
-export default defineConfig({
-  server: {
-    port: process.env.PORT,
+{
+  "name": "leakleans",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  plugins: [react(), vercel()],
-});
+  "dependencies": {
+    "@google/genai": "latest",
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "lucide-react": "latest"
+  },
+  "devDependencies": {}
+}

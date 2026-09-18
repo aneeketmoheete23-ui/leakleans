@@ -22,87 +22,89 @@ export default async function handler(req, res) {
       });
     }
 
-    const models = [
-      "gemini-3.6-flash",
-      "gemini-3.6-flash-lite",
-    ];
+    const model = "gemini-3.6-flash";
 
     let lastError = null;
 
-    for (const model of models) {
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                contents: [
-                  {
-                    parts: [
-                      {
-                        text: prompt,
-                      },
-                    ],
-                  },
-                ],
-              }),
-            }
-          );
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
 
-          const data = await response.json();
+        const data = await response.json();
 
-          if (response.ok) {
-            const text =
-              data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (response.ok) {
+          const text =
+            data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-            if (text) {
-              return res.status(200).json({
-                text,
-              });
-            }
+          if (text) {
+            return res.status(200).json({
+              text,
+            });
           }
 
-          lastError = data?.error?.message || "Gemini request failed";
+          lastError = "Gemini returned an empty response.";
+        } else {
+          lastError =
+            data?.error?.message ||
+            "Gemini request failed";
 
-          // Retry temporary Gemini server errors
           if (
-            response.status === 503 ||
-            response.status === 429 ||
-            response.status === 500
+            response.status !== 429 &&
+            response.status !== 500 &&
+            response.status !== 503
           ) {
-            await new Promise((resolve) =>
-              setTimeout(resolve, attempt * 1500)
-            );
-
-            continue;
+            break;
           }
-
-          break;
-        } catch (error) {
-          lastError = error?.message || "Network error";
-
-          await new Promise((resolve) =>
-            setTimeout(resolve, attempt * 1500)
-          );
         }
+      } catch (error) {
+        lastError =
+          error?.message || "Network error";
+      }
+
+      if (attempt < 3) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, attempt * 1500)
+        );
       }
     }
 
-    console.error("Gemini final error:", lastError);
+    console.error(
+      "Gemini final error:",
+      lastError
+    );
 
     return res.status(503).json({
       error:
         "AI service is temporarily busy. Please try again in a few seconds.",
     });
   } catch (error) {
-    console.error("Gemini server error:", error);
+    console.error(
+      "Gemini server error:",
+      error
+    );
 
     return res.status(500).json({
-      error: error?.message || "Server error",
+      error:
+        error?.message || "Server error",
     });
   }
 }

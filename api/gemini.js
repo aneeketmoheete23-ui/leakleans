@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const model = "gemini-3.6-flash";
+    const model = "gemini-3.8-flash";
 
     let lastError = null;
 
@@ -67,6 +67,12 @@ export default async function handler(req, res) {
             data?.error?.message ||
             "Gemini request failed";
 
+          console.error(
+            `Gemini attempt ${attempt} failed:`,
+            response.status,
+            lastError
+          );
+
           if (
             response.status !== 429 &&
             response.status !== 500 &&
@@ -77,12 +83,13 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         lastError =
-          error?.message || "Network error";
+          error?.message ||
+          "Network error";
       }
 
       if (attempt < 3) {
         await new Promise((resolve) =>
-          setTimeout(resolve, attempt * 1500)
+          setTimeout(resolve, attempt * 2000)
         );
       }
     }
@@ -104,7 +111,8 @@ export default async function handler(req, res) {
 
     return res.status(500).json({
       error:
-        error?.message || "Server error",
+        error?.message ||
+        "Server error",
     });
   }
 }

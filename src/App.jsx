@@ -9,7 +9,7 @@ import {
   Users,
   CreditCard,
   Bell,
-  Settings,
+  SettingsIcon,
   Menu,
   X,
   Bot,

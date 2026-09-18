@@ -1,41 +1,50 @@
 import { GoogleGenAI } from "@google/genai";
 
-export default async function handler(request) {
-  if (request.method !== "POST") {
+export default async function handler(req) {
+  if (req.method !== "POST") {
     return new Response(
       JSON.stringify({ error: "Method not allowed" }),
       {
         status: 405,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
   }
 
   try {
-    const { prompt } = await request.json();
+    const body = await req.json();
+    const prompt = body?.prompt;
 
     if (!prompt) {
       return new Response(
         JSON.stringify({ error: "Prompt is required" }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
       return new Response(
         JSON.stringify({ error: "GEMINI_API_KEY is missing" }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
     }
 
     const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
+      apiKey,
     });
 
     const response = await ai.models.generateContent({
@@ -44,10 +53,14 @@ export default async function handler(request) {
     });
 
     return new Response(
-      JSON.stringify({ text: response.text }),
+      JSON.stringify({
+        text: response.text,
+      }),
       {
         status: 200,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
   } catch (error) {
@@ -59,7 +72,9 @@ export default async function handler(request) {
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
   }

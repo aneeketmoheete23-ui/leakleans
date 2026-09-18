@@ -58,4 +58,5 @@ ${text}
 
     console.error(error);
   }
-}
+} 
+export default App;

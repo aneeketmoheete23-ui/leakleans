@@ -22,52 +22,81 @@ export default async function handler(req, res) {
       });
     }
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
+    const models = [
+      "gemini-3.6-flash",
+      "gemini-3.6-flash-lite",
+    ];
+
+    let lastError = null;
+
+    for (const model of models) {
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
             {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-        }),
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                contents: [
+                  {
+                    parts: [
+                      {
+                        text: prompt,
+                      },
+                    ],
+                  },
+                ],
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            const text =
+              data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (text) {
+              return res.status(200).json({
+                text,
+              });
+            }
+          }
+
+          lastError = data?.error?.message || "Gemini request failed";
+
+          // Retry temporary Gemini server errors
+          if (
+            response.status === 503 ||
+            response.status === 429 ||
+            response.status === 500
+          ) {
+            await new Promise((resolve) =>
+              setTimeout(resolve, attempt * 1500)
+            );
+
+            continue;
+          }
+
+          break;
+        } catch (error) {
+          lastError = error?.message || "Network error";
+
+          await new Promise((resolve) =>
+            setTimeout(resolve, attempt * 1500)
+          );
+        }
       }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Gemini API error:", data);
-
-      return res.status(response.status).json({
-        error:
-          data?.error?.message ||
-          "Gemini API request failed",
-      });
     }
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    console.error("Gemini final error:", lastError);
 
-    if (!text) {
-      console.error("Gemini returned no text:", data);
-
-      return res.status(500).json({
-        error: "Gemini returned no text response",
-      });
-    }
-
-    return res.status(200).json({
-      text,
+    return res.status(503).json({
+      error:
+        "AI service is temporarily busy. Please try again in a few seconds.",
     });
   } catch (error) {
     console.error("Gemini server error:", error);

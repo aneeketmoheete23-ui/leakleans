@@ -59,6 +59,8 @@ export default async function handler(req, res) {
       data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!text) {
+      console.error("Gemini returned no text:", data);
+
       return res.status(500).json({
         error: "Gemini returned no text response",
       });

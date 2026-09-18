@@ -17,8 +17,6 @@ import {
   CheckCircle2,
   RefreshCw,
   Send,
-  Facebook,
-  Instagram,
 } from "lucide-react";
 import "./App.css";
 
@@ -43,7 +41,8 @@ const leaks = [
     severity: "High",
     amount: 86000,
     owner: "Call Team",
-    signal: "Inbound customer calls were not followed by a successful callback.",
+    signal:
+      "Inbound customer calls were not followed by a successful callback.",
   },
   {
     id: 3,
@@ -52,7 +51,8 @@ const leaks = [
     severity: "Medium",
     amount: 214000,
     owner: "Sales Team",
-    signal: "Quotes were created but several customers did not progress to order.",
+    signal:
+      "Quotes were created but several customers did not progress to order.",
   },
 ];
 
@@ -85,7 +85,11 @@ function money(value) {
 }
 
 function Severity({ value }) {
-  return <span className={`severity ${value.toLowerCase()}`}>{value}</span>;
+  return (
+    <span className={`severity ${value.toLowerCase()}`}>
+      {value}
+    </span>
+  );
 }
 
 function App() {
@@ -95,29 +99,36 @@ function App() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
-  const totalLeak = leaks.reduce((sum, leak) => sum + leak.amount, 0);
+  const totalLeak = leaks.reduce(
+    (sum, leak) => sum + leak.amount,
+    0
+  );
 
   function navigate(name) {
     setPage(name);
     setMobileOpen(false);
   }
 
-  async function investigate(leak) {
+  function investigate(leak) {
     setSelectedLeak(leak);
     setPage("Investigation");
   }
 
-  async function askAssistant() {
+  function askAssistant() {
     if (!message.trim()) return;
 
     const text = message.trim();
 
     setChat((prev) => [
       ...prev,
-      { role: "user", text },
+      {
+        role: "user",
+        text,
+      },
       {
         role: "ai",
-        text: "I can help investigate revenue leakage, missed follow-ups, customer journeys and recovery actions.",
+        text:
+          "I can help investigate revenue leakage, missed follow-ups, customer journeys and recovery actions.",
       },
     ]);
 
@@ -126,7 +137,11 @@ function App() {
 
   return (
     <div className="app">
-      <aside className={`sidebar ${mobileOpen ? "open" : ""}`}>
+      <aside
+        className={`sidebar ${
+          mobileOpen ? "open" : ""
+        }`}
+      >
         <div className="brandArea">
           <div className="brandIcon">
             <Bot size={25} />
@@ -134,7 +149,9 @@ function App() {
 
           <div>
             <div className="brandName">AI REVENUE</div>
-            <div className="brandName">LEAK DETECTOR</div>
+            <div className="brandName">
+              LEAK DETECTOR
+            </div>
           </div>
 
           <button
@@ -146,15 +163,22 @@ function App() {
         </div>
 
         <div className="founderCard">
-          <div className="founderName">{FOUNDER}</div>
-          <div className="founderRole">Founder, AI Revenue Leak Detector</div>
+          <div className="founderName">
+            {FOUNDER}
+          </div>
+
+          <div className="founderRole">
+            Founder, AI Revenue Leak Detector
+          </div>
         </div>
 
         <nav>
           {navItems.map(([name, Icon]) => (
             <button
               key={name}
-              className={page === name ? "navActive" : ""}
+              className={
+                page === name ? "navActive" : ""
+              }
               onClick={() => navigate(name)}
             >
               <Icon size={18} />
@@ -165,7 +189,9 @@ function App() {
 
         <div className="sidebarBottom">
           <strong>{TAGLINE}</strong>
-          <span>Detect → Investigate → Resolve → Prevent</span>
+          <span>
+            Detect → Investigate → Resolve → Prevent
+          </span>
         </div>
       </aside>
 
@@ -180,8 +206,13 @@ function App() {
             </button>
 
             <div>
-              <div className="pageTitle">{page}</div>
-              <div className="pageSub">Revenue Intelligence Workspace</div>
+              <div className="pageTitle">
+                {page}
+              </div>
+
+              <div className="pageSub">
+                Revenue Intelligence Workspace
+              </div>
             </div>
           </div>
 
@@ -202,7 +233,10 @@ function App() {
           )}
 
           {page === "Revenue Leaks" && (
-            <Leaks leaks={leaks} onInvestigate={investigate} />
+            <Leaks
+              leaks={leaks}
+              onInvestigate={investigate}
+            />
           )}
 
           {page === "Investigation" && (
@@ -212,13 +246,30 @@ function App() {
             />
           )}
 
-          {page === "Integrations" && <Integrations />}
-          {page === "Analytics" && <Analytics totalLeak={totalLeak} />}
+          {page === "Integrations" && (
+            <Integrations />
+          )}
+
+          {page === "Analytics" && (
+            <Analytics totalLeak={totalLeak} />
+          )}
+
           {page === "Actions" && <Actions />}
-          {page === "Agent System" && <AgentSystem />}
+
+          {page === "Agent System" && (
+            <AgentSystem />
+          )}
+
           {page === "Team" && <Team />}
-          {page === "Billing & Payments" && <Billing />}
-          {page === "Notifications" && <Notifications />}
+
+          {page === "Billing & Payments" && (
+            <Billing />
+          )}
+
+          {page === "Notifications" && (
+            <Notifications />
+          )}
+
           {page === "Settings" && <Settings />}
         </div>
 
@@ -226,7 +277,9 @@ function App() {
           <div className="assistantHeader">
             <div>
               <Bot size={19} />
-              <strong>AI Revenue Assistant</strong>
+              <strong>
+                AI Revenue Assistant
+              </strong>
             </div>
 
             <span>Gemini powered</span>
@@ -235,8 +288,9 @@ function App() {
           <div className="chatArea">
             {chat.length === 0 && (
               <div className="chatEmpty">
-                Ask about revenue leakage, missed follow-ups,
-                customer journeys or recovery actions.
+                Ask about revenue leakage, missed
+                follow-ups, customer journeys or
+                recovery actions.
               </div>
             )}
 
@@ -253,9 +307,13 @@ function App() {
           <div className="chatInput">
             <input
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) =>
+                setMessage(e.target.value)
+              }
               onKeyDown={(e) => {
-                if (e.key === "Enter") askAssistant();
+                if (e.key === "Enter") {
+                  askAssistant();
+                }
               }}
               placeholder="Ask the AI Revenue Assistant..."
             />
@@ -270,40 +328,41 @@ function App() {
           <div>
             © 2026 {BRAND} · {FOUNDER}
           </div>
-
-          <div className="socials">
-            <button>
-              <Facebook size={18} />
-            </button>
-
-            <button>
-              <Instagram size={18} />
-            </button>
-          </div>
         </footer>
       </main>
     </div>
   );
 }
 
-function Overview({ totalLeak, leaks, onInvestigate }) {
+function Overview({
+  totalLeak,
+  leaks,
+  onInvestigate,
+}) {
   return (
     <>
       <section className="hero">
         <div>
-          <div className="eyebrow">REVENUE LEAKAGE INTELLIGENCE</div>
+          <div className="eyebrow">
+            REVENUE LEAKAGE INTELLIGENCE
+          </div>
 
-          <h1>Find Where Your Revenue Is Leaking.</h1>
+          <h1>
+            Find Where Your Revenue Is Leaking.
+          </h1>
 
           <p>
-            Connect the systems your business already uses.
-            LeakLeans helps identify hidden revenue leakage
-            and guides your team toward recovery.
+            Connect the systems your business
+            already uses. LeakLeans helps identify
+            hidden revenue leakage and guides your
+            team toward recovery.
           </p>
 
           <button
             className="primary"
-            onClick={() => onInvestigate(leaks[0])}
+            onClick={() =>
+              onInvestigate(leaks[0])
+            }
           >
             Investigate a Leak
             <ArrowRight size={17} />
@@ -313,7 +372,9 @@ function Overview({ totalLeak, leaks, onInvestigate }) {
         <div className="heroGraphic">
           <Bot size={50} />
           <strong>AI INTELLIGENCE</strong>
-          <span>Across your existing systems</span>
+          <span>
+            Across your existing systems
+          </span>
         </div>
       </section>
 
@@ -332,7 +393,11 @@ function Overview({ totalLeak, leaks, onInvestigate }) {
 
         <Stat
           title="High Priority"
-          value={leaks.filter((x) => x.severity === "High").length}
+          value={
+            leaks.filter(
+              (x) => x.severity === "High"
+            ).length
+          }
           icon={<Zap />}
         />
 
@@ -346,8 +411,13 @@ function Overview({ totalLeak, leaks, onInvestigate }) {
       <section className="panel">
         <div className="sectionHeading">
           <div>
-            <h2>Latest Revenue Leakage</h2>
-            <p>Signals requiring investigation</p>
+            <h2>
+              Latest Revenue Leakage
+            </h2>
+
+            <p>
+              Signals requiring investigation
+            </p>
           </div>
         </div>
 
@@ -363,7 +433,9 @@ function Overview({ totalLeak, leaks, onInvestigate }) {
 function Stat({ title, value, icon }) {
   return (
     <div className="statCard">
-      <div className="statIcon">{icon}</div>
+      <div className="statIcon">
+        {icon}
+      </div>
 
       <div>
         <span>{title}</span>
@@ -373,11 +445,17 @@ function Stat({ title, value, icon }) {
   );
 }
 
-function LeakTable({ leaks, onInvestigate }) {
+function LeakTable({
+  leaks,
+  onInvestigate,
+}) {
   return (
     <div className="tableWrap">
       {leaks.map((leak) => (
-        <div className="leakRow" key={leak.id}>
+        <div
+          className="leakRow"
+          key={leak.id}
+        >
           <div>
             <strong>{leak.title}</strong>
             <span>{leak.system}</span>
@@ -391,7 +469,9 @@ function LeakTable({ leaks, onInvestigate }) {
 
           <button
             className="smallButton"
-            onClick={() => onInvestigate(leak)}
+            onClick={() =>
+              onInvestigate(leak)
+            }
           >
             Investigate
             <ArrowRight size={14} />
@@ -402,7 +482,10 @@ function LeakTable({ leaks, onInvestigate }) {
   );
 }
 
-function Leaks({ leaks, onInvestigate }) {
+function Leaks({
+  leaks,
+  onInvestigate,
+}) {
   return (
     <>
       <PageIntro
@@ -421,7 +504,10 @@ function Leaks({ leaks, onInvestigate }) {
   );
 }
 
-function Investigation({ leak, onInvestigate }) {
+function Investigation({
+  leak,
+  onInvestigate,
+}) {
   return (
     <>
       <PageIntro
@@ -439,20 +525,40 @@ function Investigation({ leak, onInvestigate }) {
           <p>{leak.system}</p>
 
           <div className="signalBox">
-            <span>DETECTED SIGNAL</span>
+            <span>
+              DETECTED SIGNAL
+            </span>
+
             <p>{leak.signal}</p>
           </div>
 
           <div className="evidenceGrid">
-            <Info title="Owner / Team" value={leak.owner} />
-            <Info title="Potential Impact" value={money(leak.amount)} />
-            <Info title="Detection" value="AI signal correlation" />
-            <Info title="Status" value="Needs investigation" />
+            <Info
+              title="Owner / Team"
+              value={leak.owner}
+            />
+
+            <Info
+              title="Potential Impact"
+              value={money(leak.amount)}
+            />
+
+            <Info
+              title="Detection"
+              value="AI signal correlation"
+            />
+
+            <Info
+              title="Status"
+              value="Needs investigation"
+            />
           </div>
 
           <button
             className="primary full"
-            onClick={() => onInvestigate(leak)}
+            onClick={() =>
+              onInvestigate(leak)
+            }
           >
             <Bot size={17} />
             Run AI Investigation
@@ -464,16 +570,26 @@ function Investigation({ leak, onInvestigate }) {
             <Bot size={20} />
 
             <div>
-              <strong>AI Investigation</strong>
-              <span>Gemini analysis</span>
+              <strong>
+                AI Investigation
+              </strong>
+
+              <span>
+                Gemini analysis
+              </span>
             </div>
           </div>
 
           <div className="emptyAI">
             <Bot size={40} />
-            <strong>Ready to investigate</strong>
+
+            <strong>
+              Ready to investigate
+            </strong>
+
             <span>
-              AI investigation will analyze this revenue leakage signal.
+              AI investigation will analyze
+              this revenue leakage signal.
             </span>
           </div>
         </div>
@@ -502,12 +618,17 @@ function Integrations() {
 
       <div className="integrationGrid">
         {systems.map((system) => (
-          <div className="integrationCard" key={system}>
+          <div
+            className="integrationCard"
+            key={system}
+          >
             <Plug size={24} />
 
             <div>
               <strong>{system}</strong>
-              <span>API / OAuth connection</span>
+              <span>
+                API / OAuth connection
+              </span>
             </div>
 
             <button className="smallButton">
@@ -559,6 +680,25 @@ function Analytics({ totalLeak }) {
 }
 
 function Actions() {
+  const actions = [
+    [
+      "Assign Owner",
+      "Route the leakage case to the correct team.",
+    ],
+    [
+      "Request Approval",
+      "Ask a manager before an action is executed.",
+    ],
+    [
+      "Trigger Follow-up",
+      "Prepare a customer follow-up workflow.",
+    ],
+    [
+      "Create Task",
+      "Create an operational task for the responsible team.",
+    ],
+  ];
+
   return (
     <>
       <PageIntro
@@ -568,15 +708,15 @@ function Actions() {
       />
 
       <div className="actionGrid">
-        {[
-          ["Assign Owner", "Route the leakage case to the correct team."],
-          ["Request Approval", "Ask a manager before an action is executed."],
-          ["Trigger Follow-up", "Prepare a customer follow-up workflow."],
-          ["Create Task", "Create an operational task for the responsible team."],
-        ].map(([title, text]) => (
-          <div className="actionCard" key={title}>
+        {actions.map(([title, text]) => (
+          <div
+            className="actionCard"
+            key={title}
+          >
             <Zap size={22} />
+
             <h3>{title}</h3>
+
             <p>{text}</p>
 
             <button className="smallButton">
@@ -612,12 +752,19 @@ function AgentSystem() {
 
       <section className="panel">
         {steps.map((step, index) => (
-          <div className="teamRow" key={step}>
-            <div className="avatar">{index + 1}</div>
+          <div
+            className="teamRow"
+            key={step}
+          >
+            <div className="avatar">
+              {index + 1}
+            </div>
 
             <div>
               <strong>{step}</strong>
-              <span>Controlled agent workflow</span>
+              <span>
+                Controlled agent workflow
+              </span>
             </div>
 
             <CheckCircle2 size={18} />
@@ -629,6 +776,13 @@ function AgentSystem() {
 }
 
 function Team() {
+  const teams = [
+    "Revenue Operations",
+    "Sales Team",
+    "Customer Support",
+    "Administration",
+  ];
+
   return (
     <>
       <PageIntro
@@ -638,26 +792,41 @@ function Team() {
       />
 
       <section className="panel">
-        {["Revenue Operations", "Sales Team", "Customer Support", "Administration"].map(
-          (name) => (
-            <div className="teamRow" key={name}>
-              <div className="avatar">{name.charAt(0)}</div>
-
-              <div>
-                <strong>{name}</strong>
-                <span>Active team</span>
-              </div>
-
-              <span className="status">Active</span>
+        {teams.map((name) => (
+          <div
+            className="teamRow"
+            key={name}
+          >
+            <div className="avatar">
+              {name.charAt(0)}
             </div>
-          )
-        )}
+
+            <div>
+              <strong>{name}</strong>
+              <span>Active team</span>
+            </div>
+
+            <span className="status">
+              Active
+            </span>
+          </div>
+        ))}
       </section>
     </>
   );
 }
 
 function Billing() {
+  const methods = [
+    "Razorpay",
+    "Stripe",
+    "PayPal",
+    "Google Pay",
+    "PhonePe",
+    "Debit Card",
+    "Credit Card",
+  ];
+
   return (
     <>
       <PageIntro
@@ -667,21 +836,32 @@ function Billing() {
       />
 
       <div className="paymentGrid">
-        {["Razorpay", "Stripe", "PayPal", "Google Pay", "PhonePe", "Debit Card", "Credit Card"].map(
-          (method) => (
-            <div className="paymentCard" key={method}>
-              <CreditCard size={28} />
-              <strong>{method}</strong>
-              <span>Available</span>
-            </div>
-          )
-        )}
+        {methods.map((method) => (
+          <div
+            className="paymentCard"
+            key={method}
+          >
+            <CreditCard size={28} />
+
+            <strong>{method}</strong>
+
+            <span>Available</span>
+          </div>
+        ))}
       </div>
     </>
   );
 }
 
 function Notifications() {
+  const notifications = [
+    "High-value leakage detected",
+    "Missed customer follow-up",
+    "AI investigation completed",
+    "Action requires approval",
+    "Revenue recovery verified",
+  ];
+
   return (
     <>
       <PageIntro
@@ -691,14 +871,11 @@ function Notifications() {
       />
 
       <section className="panel">
-        {[
-          "High-value leakage detected",
-          "Missed customer follow-up",
-          "AI investigation completed",
-          "Action requires approval",
-          "Revenue recovery verified",
-        ].map((item) => (
-          <div className="notificationRow" key={item}>
+        {notifications.map((item) => (
+          <div
+            className="notificationRow"
+            key={item}
+          >
             <Bell size={18} />
 
             <div>
@@ -706,7 +883,10 @@ function Notifications() {
               <span>Enabled</span>
             </div>
 
-            <input type="checkbox" defaultChecked />
+            <input
+              type="checkbox"
+              defaultChecked
+            />
           </div>
         ))}
       </section>
@@ -727,22 +907,30 @@ function Settings() {
         <div className="formGrid">
           <label>
             Company Name
-            <input placeholder="Your company name" />
+            <input
+              placeholder="Your company name"
+            />
           </label>
 
           <label>
             Workspace Name
-            <input placeholder="Revenue Intelligence Workspace" />
+            <input
+              placeholder="Revenue Intelligence Workspace"
+            />
           </label>
 
           <label>
-            Facebook
-            <input placeholder="Add your Facebook URL" />
+            Company Email
+            <input
+              placeholder="Company email"
+            />
           </label>
 
           <label>
-            Instagram
-            <input placeholder="Add your Instagram URL" />
+            Contact Number
+            <input
+              placeholder="Contact number"
+            />
           </label>
         </div>
 
@@ -754,11 +942,19 @@ function Settings() {
   );
 }
 
-function PageIntro({ eyebrow, title, text }) {
+function PageIntro({
+  eyebrow,
+  title,
+  text,
+}) {
   return (
     <section className="pageIntro">
-      <div className="eyebrow">{eyebrow}</div>
+      <div className="eyebrow">
+        {eyebrow}
+      </div>
+
       <h1>{title}</h1>
+
       <p>{text}</p>
     </section>
   );

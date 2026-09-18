@@ -1337,7 +1337,7 @@ footer {
     flex-direction: column;
   }
 
-  .chatMessage {
-    max-width: 94%;
-  }
+.chatMessage {
+  width: 100%;
+}
 }

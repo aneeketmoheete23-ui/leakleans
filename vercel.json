@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/gemini.js": {
-      "runtime": "@vercel/node"
-    }
-  }
-}

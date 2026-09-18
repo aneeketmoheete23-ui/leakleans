@@ -9,16 +9,14 @@ import {
   Users,
   CreditCard,
   Bell,
-  SettingsIcon,
+  Settings as SettingsIcon,
   Menu,
   X,
   Bot,
   ArrowRight,
   CheckCircle2,
-  Clock3,
-  ShieldCheck,
-  Send,
   RefreshCw,
+  Send,
   Facebook,
   Instagram,
 } from "lucide-react";
@@ -27,18 +25,6 @@ import "./App.css";
 const BRAND = "AI REVENUE LEAK DETECTOR";
 const TAGLINE = "Find Where Your Revenue Is Leaking.";
 const FOUNDER = "ANIKET MOHITE";
-const PHONE = "8698382024";
-const EMAIL = "Aniket.Mohite@supportleaklens.com";
-
-const systems = [
-  { name: "Salesforce", slug: "salesforce", color: "00A1E0" },
-  { name: "Genesys", slug: "genesys", color: "FF4F1F" },
-  { name: "Avaya", slug: "avaya", color: "FF4F00" },
-  { name: "WhatsApp Business", slug: "whatsapp", color: "25D366" },
-  { name: "HubSpot", slug: "hubspot", color: "FF7A59" },
-  { name: "Gmail / Google Workspace", slug: "gmail", color: "EA4335" },
-  { name: "Zendesk", slug: "zendesk", color: "03363D" },
-];
 
 const leaks = [
   {
@@ -68,24 +54,16 @@ const leaks = [
     owner: "Sales Team",
     signal: "Quotes were created but several customers did not progress to order.",
   },
-  {
-    id: 4,
-    title: "Delayed Response",
-    system: "Gmail",
-    severity: "Medium",
-    amount: 64000,
-    owner: "Support Team",
-    signal: "Customer emails remained unanswered beyond the expected response time.",
-  },
-  {
-    id: 5,
-    title: "Repeated Complaint Loop",
-    system: "Zendesk",
-    severity: "Low",
-    amount: 39000,
-    owner: "Support Team",
-    signal: "The same complaint was reopened multiple times without final resolution.",
-  },
+];
+
+const systems = [
+  "Salesforce",
+  "Genesys",
+  "Avaya",
+  "WhatsApp Business",
+  "HubSpot",
+  "Gmail",
+  "Zendesk",
 ];
 
 const navItems = [
@@ -99,149 +77,51 @@ const navItems = [
   ["Team", Users],
   ["Billing & Payments", CreditCard],
   ["Notifications", Bell],
-  ["Settings", Settings],
+  ["Settings", SettingsIcon],
 ];
 
-const roles = ["Admin", "Manager", "Project Head", "Team Member"];
-
-function formatMoney(value) {
+function money(value) {
   return `₹${value.toLocaleString("en-IN")}`;
 }
 
-function logoUrl(slug, color) {
-  return `https://cdn.simpleicons.org/${slug}/${color}`;
-}
-
 function Severity({ value }) {
-  return (
-    <span className={`severity ${value.toLowerCase()}`}>
-      {value}
-    </span>
-  );
+  return <span className={`severity ${value.toLowerCase()}`}>{value}</span>;
 }
 
 function App() {
   const [page, setPage] = useState("Overview");
-  const [role, setRole] = useState("Admin");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedLeak, setSelectedLeak] = useState(leaks[0]);
-  const [aiResult, setAiResult] = useState(null);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [chat, setChat] = useState([]);
   const [message, setMessage] = useState("");
-  const [alertsOpen, setAlertsOpen] = useState(false);
+  const [chat, setChat] = useState([]);
 
   const totalLeak = leaks.reduce((sum, leak) => sum + leak.amount, 0);
 
-  async function investigateLeak(leak) {
+  function navigate(name) {
+    setPage(name);
+    setMobileOpen(false);
+  }
+
+  async function investigate(leak) {
     setSelectedLeak(leak);
-    setAiLoading(true);
-    setAiResult(null);
     setPage("Investigation");
-
-    const prompt = `
-You are the AI Revenue Leak Detector intelligence engine.
-
-Analyze this business revenue leakage signal.
-
-Leak:
-${JSON.stringify(leak, null, 2)}
-
-Return a clear operational investigation using these headings:
-
-WHO MISSED THIS?
-WHY WAS THIS MISSED?
-WHAT NEEDS TO BE DONE?
-PROBABLE CAUSE
-BUSINESS IMPACT
-RECOMMENDED RESOLUTION
-CONFIDENCE
-
-Important:
-- Never invent a person's name.
-- If the responsible person is unknown, say that the owner is not identified from available data.
-- Clearly distinguish evidence from inference.
-- Focus on practical revenue recovery.
-`;
-
-    try {
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "AI request failed");
-      }
-
-      setAiResult(data.text);
-    } catch (error) {
-      setAiResult(
-        `AI investigation could not be completed.\n\nReason: ${error.message}`
-      );
-    } finally {
-      setAiLoading(false);
-    }
   }
 
   async function askAssistant() {
     if (!message.trim()) return;
 
-    const userMessage = message;
+    const text = message.trim();
+
+    setChat((prev) => [
+      ...prev,
+      { role: "user", text },
+      {
+        role: "ai",
+        text: "I can help investigate revenue leakage, missed follow-ups, customer journeys and recovery actions.",
+      },
+    ]);
+
     setMessage("");
-    setChat((prev) => [...prev, { role: "user", text: userMessage }]);
-
-    try {
-      const prompt = `
-You are the AI assistant inside AI Revenue Leak Detector.
-
-The product detects revenue leakage across CRM, call systems, email, support systems and other business workflows.
-
-Current role: ${role}
-
-User question:
-${userMessage}
-
-Give a concise practical answer focused on detecting, investigating, resolving or preventing revenue leakage.
-`;
-
-      const response = await fetch("/api/gemini", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "AI request failed");
-      }
-
-      setChat((prev) => [
-        ...prev,
-        { role: "ai", text: data.text },
-      ]);
-    } catch (error) {
-      setChat((prev) => [
-        ...prev,
-        {
-          role: "ai",
-          text: `AI assistant error: ${error.message}`,
-        },
-      ]);
-    }
-  }
-
-  function navigate(name) {
-    setPage(name);
-    setMobileOpen(false);
   }
 
   return (
@@ -267,20 +147,7 @@ Give a concise practical answer focused on detecting, investigating, resolving o
 
         <div className="founderCard">
           <div className="founderName">{FOUNDER}</div>
-          <div className="founderRole">
-            Founder, AI Revenue Leak Detector
-          </div>
-          <div className="founderContact">{PHONE}</div>
-          <div className="founderContact">{EMAIL}</div>
-        </div>
-
-        <div className="roleBox">
-          <label>ACCESS ROLE</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            {roles.map((item) => (
-              <option key={item}>{item}</option>
-            ))}
-          </select>
+          <div className="founderRole">Founder, AI Revenue Leak Detector</div>
         </div>
 
         <nav>
@@ -314,33 +181,15 @@ Give a concise practical answer focused on detecting, investigating, resolving o
 
             <div>
               <div className="pageTitle">{page}</div>
-              <div className="pageSub">
-                {role} workspace
-              </div>
+              <div className="pageSub">Revenue Intelligence Workspace</div>
             </div>
           </div>
 
           <div className="topActions">
-            <button
-              className="iconButton"
-              onClick={() => setAlertsOpen(!alertsOpen)}
-            >
+            <button className="iconButton">
               <Bell size={20} />
-              <span className="notificationDot" />
             </button>
-
-            <div className="rolePill">{role}</div>
           </div>
-
-          {alertsOpen && (
-            <div className="alertPopup">
-              <strong>Alerts</strong>
-              <p>3 revenue leakage signals need attention.</p>
-              <button onClick={() => navigate("Revenue Leaks")}>
-                View Revenue Leaks <ArrowRight size={15} />
-              </button>
-            </div>
-          )}
         </header>
 
         <div className="content">
@@ -348,43 +197,28 @@ Give a concise practical answer focused on detecting, investigating, resolving o
             <Overview
               totalLeak={totalLeak}
               leaks={leaks}
-              onInvestigate={investigateLeak}
-              role={role}
+              onInvestigate={investigate}
             />
           )}
 
           {page === "Revenue Leaks" && (
-            <Leaks
-              leaks={leaks}
-              onInvestigate={investigateLeak}
-            />
+            <Leaks leaks={leaks} onInvestigate={investigate} />
           )}
 
           {page === "Investigation" && (
             <Investigation
               leak={selectedLeak}
-              result={aiResult}
-              loading={aiLoading}
-              onInvestigate={investigateLeak}
+              onInvestigate={investigate}
             />
           )}
 
           {page === "Integrations" && <Integrations />}
-
-          {page === "Analytics" && (
-            <Analytics totalLeak={totalLeak} />
-          )}
-
+          {page === "Analytics" && <Analytics totalLeak={totalLeak} />}
           {page === "Actions" && <Actions />}
-
           {page === "Agent System" && <AgentSystem />}
-
-          {page === "Team" && <Team role={role} />}
-
+          {page === "Team" && <Team />}
           {page === "Billing & Payments" && <Billing />}
-
           {page === "Notifications" && <Notifications />}
-
           {page === "Settings" && <Settings />}
         </div>
 
@@ -394,6 +228,7 @@ Give a concise practical answer focused on detecting, investigating, resolving o
               <Bot size={19} />
               <strong>AI Revenue Assistant</strong>
             </div>
+
             <span>Gemini powered</span>
           </div>
 
@@ -424,6 +259,7 @@ Give a concise practical answer focused on detecting, investigating, resolving o
               }}
               placeholder="Ask the AI Revenue Assistant..."
             />
+
             <button onClick={askAssistant}>
               <Send size={17} />
             </button>
@@ -436,10 +272,11 @@ Give a concise practical answer focused on detecting, investigating, resolving o
           </div>
 
           <div className="socials">
-            <button title="Facebook">
+            <button>
               <Facebook size={18} />
             </button>
-            <button title="Instagram">
+
+            <button>
               <Instagram size={18} />
             </button>
           </div>
@@ -449,58 +286,56 @@ Give a concise practical answer focused on detecting, investigating, resolving o
   );
 }
 
-function Overview({ totalLeak, leaks, onInvestigate, role }) {
+function Overview({ totalLeak, leaks, onInvestigate }) {
   return (
     <>
       <section className="hero">
         <div>
           <div className="eyebrow">REVENUE LEAKAGE INTELLIGENCE</div>
+
           <h1>Find Where Your Revenue Is Leaking.</h1>
+
           <p>
             Connect the systems your business already uses.
-            AI Revenue Leak Detector finds hidden leakage,
-            explains the cause and guides your team toward recovery.
+            LeakLeans helps identify hidden revenue leakage
+            and guides your team toward recovery.
           </p>
 
-          <div className="heroButtons">
-            <button
-              className="primary"
-              onClick={() => onInvestigate(leaks[0])}
-            >
-              Investigate a Leak <ArrowRight size={17} />
-            </button>
-            <div className="heroFounder">
-              <strong>{FOUNDER}</strong>
-              <span>Founder</span>
-            </div>
-          </div>
+          <button
+            className="primary"
+            onClick={() => onInvestigate(leaks[0])}
+          >
+            Investigate a Leak
+            <ArrowRight size={17} />
+          </button>
         </div>
 
         <div className="heroGraphic">
-          <div className="orbitCard">
-            <Bot size={30} />
-            <strong>AI INTELLIGENCE</strong>
-            <span>Across your existing systems</span>
-          </div>
+          <Bot size={50} />
+          <strong>AI INTELLIGENCE</strong>
+          <span>Across your existing systems</span>
         </div>
       </section>
 
       <div className="statsGrid">
         <Stat
           title="Detected Leakage"
-          value={formatMoney(totalLeak)}
+          value={money(totalLeak)}
           icon={<AlertTriangle />}
         />
+
         <Stat
           title="Active Signals"
           value={leaks.length}
           icon={<Search />}
         />
+
         <Stat
           title="High Priority"
           value={leaks.filter((x) => x.severity === "High").length}
           icon={<Zap />}
         />
+
         <Stat
           title="Connected Systems"
           value={systems.length}
@@ -514,7 +349,6 @@ function Overview({ totalLeak, leaks, onInvestigate, role }) {
             <h2>Latest Revenue Leakage</h2>
             <p>Signals requiring investigation</p>
           </div>
-          <span className="roleTag">{role}</span>
         </div>
 
         <LeakTable
@@ -530,6 +364,7 @@ function Stat({ title, value, icon }) {
   return (
     <div className="statCard">
       <div className="statIcon">{icon}</div>
+
       <div>
         <span>{title}</span>
         <strong>{value}</strong>
@@ -551,14 +386,15 @@ function LeakTable({ leaks, onInvestigate }) {
           <Severity value={leak.severity} />
 
           <strong className="amount">
-            {formatMoney(leak.amount)}
+            {money(leak.amount)}
           </strong>
 
           <button
             className="smallButton"
             onClick={() => onInvestigate(leak)}
           >
-            Investigate <ArrowRight size={14} />
+            Investigate
+            <ArrowRight size={14} />
           </button>
         </div>
       ))}
@@ -576,31 +412,31 @@ function Leaks({ leaks, onInvestigate }) {
       />
 
       <section className="panel">
-        <LeakTable leaks={leaks} onInvestigate={onInvestigate} />
+        <LeakTable
+          leaks={leaks}
+          onInvestigate={onInvestigate}
+        />
       </section>
     </>
   );
 }
 
-function Investigation({ leak, result, loading, onInvestigate }) {
+function Investigation({ leak, onInvestigate }) {
   return (
     <>
       <PageIntro
         eyebrow="AI INVESTIGATION"
         title="Investigate Revenue Leakage"
-        text="Understand who missed the signal, why it happened and what needs to happen next."
+        text="Understand the signal and determine the next operational action."
       />
 
       <section className="investigationGrid">
         <div className="panel">
-          <div className="investigationHeader">
-            <div>
-              <Severity value={leak.severity} />
-              <h2>{leak.title}</h2>
-              <p>{leak.system}</p>
-            </div>
-            <strong>{formatMoney(leak.amount)}</strong>
-          </div>
+          <Severity value={leak.severity} />
+
+          <h2>{leak.title}</h2>
+
+          <p>{leak.system}</p>
 
           <div className="signalBox">
             <span>DETECTED SIGNAL</span>
@@ -609,7 +445,7 @@ function Investigation({ leak, result, loading, onInvestigate }) {
 
           <div className="evidenceGrid">
             <Info title="Owner / Team" value={leak.owner} />
-            <Info title="Potential Impact" value={formatMoney(leak.amount)} />
+            <Info title="Potential Impact" value={money(leak.amount)} />
             <Info title="Detection" value="AI signal correlation" />
             <Info title="Status" value="Needs investigation" />
           </div>
@@ -617,56 +453,29 @@ function Investigation({ leak, result, loading, onInvestigate }) {
           <button
             className="primary full"
             onClick={() => onInvestigate(leak)}
-            disabled={loading}
           >
-            {loading ? (
-              <>
-                <RefreshCw size={17} className="spin" />
-                AI Investigating...
-              </>
-            ) : (
-              <>
-                <Bot size={17} />
-                Run AI Investigation
-              </>
-            )}
+            <Bot size={17} />
+            Run AI Investigation
           </button>
         </div>
 
         <div className="panel aiPanel">
           <div className="aiTitle">
             <Bot size={20} />
+
             <div>
               <strong>AI Investigation</strong>
               <span>Gemini analysis</span>
             </div>
           </div>
 
-          {loading && (
-            <div className="loadingBox">
-              <RefreshCw className="spin" />
-              <strong>Analyzing the revenue leakage signal...</strong>
-              <span>
-                Correlating ownership, workflow and business impact.
-              </span>
-            </div>
-          )}
-
-          {!loading && !result && (
-            <div className="emptyAI">
-              <Bot size={40} />
-              <strong>Ready to investigate</strong>
-              <span>
-                Run the AI investigation to understand the cause and next action.
-              </span>
-            </div>
-          )}
-
-          {!loading && result && (
-            <div className="aiResult">
-              {result}
-            </div>
-          )}
+          <div className="emptyAI">
+            <Bot size={40} />
+            <strong>Ready to investigate</strong>
+            <span>
+              AI investigation will analyze this revenue leakage signal.
+            </span>
+          </div>
         </div>
       </section>
     </>
@@ -683,8 +492,6 @@ function Info({ title, value }) {
 }
 
 function Integrations() {
-  const [selected, setSelected] = useState("Salesforce");
-
   return (
     <>
       <PageIntro
@@ -695,69 +502,20 @@ function Integrations() {
 
       <div className="integrationGrid">
         {systems.map((system) => (
-          <div className="integrationCard" key={system.name}>
-            <div className="integrationLogo">
-              <img
-                src={logoUrl(system.slug, system.color)}
-                alt={system.name}
-              />
-            </div>
+          <div className="integrationCard" key={system}>
+            <Plug size={24} />
 
             <div>
-              <strong>{system.name}</strong>
+              <strong>{system}</strong>
               <span>API / OAuth connection</span>
             </div>
 
-            <button
-              className="smallButton"
-              onClick={() => setSelected(system.name)}
-            >
+            <button className="smallButton">
               Configure
             </button>
           </div>
         ))}
       </div>
-
-      <section className="panel apiPanel">
-        <div className="sectionHeading">
-          <div>
-            <h2>Manual API Configuration</h2>
-            <p>{selected}</p>
-          </div>
-          <ShieldCheck size={22} />
-        </div>
-
-        <div className="formGrid">
-          <label>
-            Account / Instance
-            <input placeholder="Enter account or instance" />
-          </label>
-
-          <label>
-            Client ID / API Key
-            <input placeholder="Enter API credential" type="password" />
-          </label>
-
-          <label>
-            Client Secret
-            <input placeholder="Enter client secret" type="password" />
-          </label>
-
-          <label>
-            API Base URL
-            <input placeholder="https://api.example.com" />
-          </label>
-        </div>
-
-        <div className="secureNote">
-          <ShieldCheck size={18} />
-          Production credentials should be stored and processed by a secure backend, not exposed in browser code.
-        </div>
-
-        <button className="primary">
-          Save Connection
-        </button>
-      </section>
     </>
   );
 }
@@ -772,41 +530,31 @@ function Analytics({ totalLeak }) {
       />
 
       <div className="statsGrid">
-        <Stat title="Potential Revenue" value={formatMoney(totalLeak)} icon={<BarChart3 />} />
-        <Stat title="Detected Cases" value="5" icon={<Search />} />
-        <Stat title="Signals Resolved" value="0" icon={<CheckCircle2 />} />
-        <Stat title="Recovery Tracking" value="Ready" icon={<RefreshCw />} />
-      </div>
+        <Stat
+          title="Potential Revenue"
+          value={money(totalLeak)}
+          icon={<BarChart3 />}
+        />
 
-      <section className="panel chartPanel">
-        <h2>Leakage by Workflow</h2>
+        <Stat
+          title="Detected Cases"
+          value="3"
+          icon={<Search />}
+        />
 
-        <div className="bars">
-          <Bar label="Sales Follow-up" value={148000} max={214000} />
-          <Bar label="Missed Calls" value={86000} max={214000} />
-          <Bar label="Quote Conversion" value={214000} max={214000} />
-          <Bar label="Email Response" value={64000} max={214000} />
-          <Bar label="Support" value={39000} max={214000} />
-        </div>
-      </section>
-    </>
-  );
-}
+        <Stat
+          title="Signals Resolved"
+          value="0"
+          icon={<CheckCircle2 />}
+        />
 
-function Bar({ label, value, max }) {
-  return (
-    <div className="barRow">
-      <div>
-        <span>{label}</span>
-        <strong>{formatMoney(value)}</strong>
-      </div>
-      <div className="barTrack">
-        <div
-          className="barFill"
-          style={{ width: `${(value / max) * 100}%` }}
+        <Stat
+          title="Recovery Tracking"
+          value="Ready"
+          icon={<RefreshCw />}
         />
       </div>
-    </div>
+    </>
   );
 }
 
@@ -820,51 +568,38 @@ function Actions() {
       />
 
       <div className="actionGrid">
-        <ActionCard
-          title="Assign Owner"
-          text="Route the leakage case to the correct team or person."
-        />
-        <ActionCard
-          title="Request Approval"
-          text="Ask a manager before an automated action is executed."
-        />
-        <ActionCard
-          title="Trigger Follow-up"
-          text="Prepare a permitted customer follow-up workflow."
-        />
-        <ActionCard
-          title="Create Task"
-          text="Create an operational task for the responsible team."
-        />
+        {[
+          ["Assign Owner", "Route the leakage case to the correct team."],
+          ["Request Approval", "Ask a manager before an action is executed."],
+          ["Trigger Follow-up", "Prepare a customer follow-up workflow."],
+          ["Create Task", "Create an operational task for the responsible team."],
+        ].map(([title, text]) => (
+          <div className="actionCard" key={title}>
+            <Zap size={22} />
+            <h3>{title}</h3>
+            <p>{text}</p>
+
+            <button className="smallButton">
+              Configure
+            </button>
+          </div>
+        ))}
       </div>
     </>
   );
 }
 
-function ActionCard({ title, text }) {
-  return (
-    <div className="actionCard">
-      <Zap size={22} />
-      <h3>{title}</h3>
-      <p>{text}</p>
-      <button className="smallButton">
-        Configure <ArrowRight size={14} />
-      </button>
-    </div>
-  );
-}
-
 function AgentSystem() {
   const steps = [
-    ["1", "Observe Signals", "Read approved signals from connected business systems."],
-    ["2", "Correlate Activity", "Connect calls, leads, messages, quotes and support events."],
-    ["3", "Identify Ownership", "Determine which workflow or team owns the missed step."],
-    ["4", "Explain", "Generate evidence-based explanation for the leakage."],
-    ["5", "Recommend", "Suggest the next operational resolution."],
-    ["6", "Ask Approval", "Request human approval when the action requires it."],
-    ["7", "Execute", "Perform only permitted actions through connected systems."],
-    ["8", "Verify", "Check whether the leakage was resolved."],
-    ["9", "Audit", "Record the decision, action and result."],
+    "Observe Signals",
+    "Correlate Activity",
+    "Identify Ownership",
+    "Explain",
+    "Recommend",
+    "Ask Approval",
+    "Execute",
+    "Verify",
+    "Audit",
   ];
 
   return (
@@ -872,82 +607,57 @@ function AgentSystem() {
       <PageIntro
         eyebrow="AGENT INTELLIGENCE"
         title="Agent System & Behaviour"
-        text="The agent observes business signals, reasons about leakage and follows controlled action paths."
+        text="The agent observes signals, investigates leakage and follows controlled action paths."
       />
 
-      <section className="agentFlow">
-        {steps.map(([number, title, text]) => (
-          <div className="agentStep" key={number}>
-            <div className="agentNumber">{number}</div>
+      <section className="panel">
+        {steps.map((step, index) => (
+          <div className="teamRow" key={step}>
+            <div className="avatar">{index + 1}</div>
+
             <div>
-              <strong>{title}</strong>
-              <span>{text}</span>
+              <strong>{step}</strong>
+              <span>Controlled agent workflow</span>
             </div>
-            {number !== "9" && <ArrowRight size={17} />}
+
+            <CheckCircle2 size={18} />
           </div>
         ))}
-      </section>
-
-      <section className="panel">
-        <div className="aiTitle">
-          <Bot size={20} />
-          <div>
-            <strong>Agent Behaviour Rules</strong>
-            <span>Controlled automation</span>
-          </div>
-        </div>
-
-        <div className="rules">
-          <div><CheckCircle2 /> Never invent missing evidence.</div>
-          <div><CheckCircle2 /> Never expose API secrets to the browser.</div>
-          <div><CheckCircle2 /> Ask for approval before restricted actions.</div>
-          <div><CheckCircle2 /> Record actions for an audit trail.</div>
-          <div><CheckCircle2 /> Verify the result after an action.</div>
-        </div>
       </section>
     </>
   );
 }
 
-function Team({ role }) {
+function Team() {
   return (
     <>
       <PageIntro
         eyebrow="WORKFORCE"
         title="Team"
-        text={`Manage access and responsibilities for the ${role} workspace.`}
+        text="Manage access and responsibilities."
       />
 
       <section className="panel">
-        {[
-          ["Revenue Operations", "Manager"],
-          ["Sales Team", "Project Head"],
-          ["Customer Support", "Team Member"],
-          ["Administration", "Admin"],
-        ].map(([name, access]) => (
-          <div className="teamRow" key={name}>
-            <div className="avatar">{name.charAt(0)}</div>
-            <div>
-              <strong>{name}</strong>
-              <span>{access}</span>
+        {["Revenue Operations", "Sales Team", "Customer Support", "Administration"].map(
+          (name) => (
+            <div className="teamRow" key={name}>
+              <div className="avatar">{name.charAt(0)}</div>
+
+              <div>
+                <strong>{name}</strong>
+                <span>Active team</span>
+              </div>
+
+              <span className="status">Active</span>
             </div>
-            <span className="status">Active</span>
-          </div>
-        ))}
+          )
+        )}
       </section>
     </>
   );
 }
 
 function Billing() {
-  const methods = [
-    ["Razorpay", "razorpay", "0A2540"],
-    ["Stripe", "stripe", "635BFF"],
-    ["PayPal", "paypal", "003087"],
-    ["Google Pay", "googlepay", "4285F4"],
-    ["PhonePe", "phonepe", "5F259F"],
-  ];
-
   return (
     <>
       <PageIntro
@@ -956,30 +666,17 @@ function Billing() {
         text="Configure payment methods for your SaaS subscription."
       />
 
-      <section className="paymentGrid">
-        {methods.map(([name, slug, color]) => (
-          <div className="paymentCard" key={name}>
-            <img src={logoUrl(slug, color)} alt={name} />
-            <strong>{name}</strong>
-            <span>Available</span>
-          </div>
-        ))}
-        <div className="paymentCard">
-          <CreditCard />
-          <strong>Debit Card</strong>
-          <span>Available</span>
-        </div>
-        <div className="paymentCard">
-          <CreditCard />
-          <strong>Credit Card</strong>
-          <span>Available</span>
-        </div>
-        <div className="paymentCard">
-          <CreditCard />
-          <strong>super.money</strong>
-          <span>Configure</span>
-        </div>
-      </section>
+      <div className="paymentGrid">
+        {["Razorpay", "Stripe", "PayPal", "Google Pay", "PhonePe", "Debit Card", "Credit Card"].map(
+          (method) => (
+            <div className="paymentCard" key={method}>
+              <CreditCard size={28} />
+              <strong>{method}</strong>
+              <span>Available</span>
+            </div>
+          )
+        )}
+      </div>
     </>
   );
 }
@@ -1003,10 +700,12 @@ function Notifications() {
         ].map((item) => (
           <div className="notificationRow" key={item}>
             <Bell size={18} />
+
             <div>
               <strong>{item}</strong>
               <span>Enabled</span>
             </div>
+
             <input type="checkbox" defaultChecked />
           </div>
         ))}
